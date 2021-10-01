@@ -1,48 +1,5 @@
-# Modelo de Apresentação da Entrega Parcial
 
-# Estrutura de Arquivos e Pastas
-
-A estrutura aqui apresentada é uma simplificação daquela proposta pelo [Cookiecutter Data Science](https://drivendata.github.io/cookiecutter-data-science/). Também será aceito que o projeto adote a estrutura completa do Cookiecutter Data Science e isso será considerado um diferencial. A estrutura geral é a seguinte e será detalhada a seguir:
-
-~~~
-├── README.md          <- apresentação do projeto
-│
-├── data               <- dados publicados no projeto
-│
-├── notebooks          <- Jupyter notebooks ou equivalentes com demonstrações
-│
-├── src                <- demonstrações em linguagem de programação escolhida
-│   │
-│   ├── src            <- arquivos-fonte do projeto
-│   │
-│   ├── bin            <- arquivos binários
-│   │
-│   └── README.md      <- instruções básicas de instalação/execução
-│
-└── assets             <- mídias usadas no projeto
-~~~
-
-Na raiz deve haver um arquivo de nome `README.md` contendo a apresentação do projeto, como detalhado na seção seguinte.
-
-## `data`
-
-Arquivos de dados usados no projeto, quando isso ocorrer.
-
-## `notebooks`
-
-Testes ou prototipos relacionados ao projeto que tenham sido executados no Jupyter.
-
-## `src`
-
-Projeto na linguagem escolhida, incluindo todos os arquivos de dados e bibliotecas necessários para a sua execução. Dentro dessa pasta sugerimos que você mantenha uma estrutura equivalente ao Eclipse, com uma subpasta `src` onde estarão os fontes e outra subpasta `bin` onde estarão os binários.
-
- Acrescente na raiz um arquivo `README.md` com as instruções básicas de instalação e execução.
-
-## `assets`
-
-Qualquer mídia usada no seu projeto: vídeo, imagens, animações, slides etc. Coloque os arquivos aqui (mesmo que você mantenha uma cópia no diretório do código).
-
-# Modelo para Apresentação da Entrega Parcial do Projeto
+# Entrega Parcial do Projeto
 
 # Projeto `Catálogo de Filmes`
 
@@ -52,16 +9,27 @@ Qualquer mídia usada no seu projeto: vídeo, imagens, animações, slides etc. 
 * `Jhonatan Cléto` - `256444`
 
 ## Resumo do Projeto
-> Texto resumindo o projeto.
+
+Filme é uma das formas de entretenimento mais populares e lucrativas, não é por acaso que atualmente existam inúmeros serviços de streaming de vídeo tentando pegar a sua fatia em um mercado crescente. Com a grande quantidade de serviços, além da popularidade das franquias e universos cinematograficos, a escolha de quais filmes assistir ou por onde começar a acompanhar uma certa franquia de filmes tem se tornado uma tarefa difícil.
+
+Mesmo que os serviços de streaming ofereçam features de recomendações de filmes baseadas nos gostos do usuário, elas são disponíveis apenas para os assinantes das plataformas e limitadas ao catalogo da plataforma.
+
+Segundo o IMDB, a média de filmes produzidos por ano é de 2577, Empresas cinematográficas estão explorando maneiras de aumentar seu faturamento bruto de bilheteria. É difícil saber o que o público gosta antes de realmente ver suas críticas. Muitos fatores podem influenciar o gosto do público e a bilheteria bruta do filme, como diretor, elenco, gênero e orçamento. Assim, encontrar as características que fazem um filme ter sucesso, pode ajudar as produtoras a ajustar seu planejamento, melhorando o lucro e diminuindo os riscos com a produção. 
+
+Nesse contexto o MovieCatalogDS, busca oferecer uma base de dados sobre a indústria cinematográfica, permitindo a construção de mecanismos de busca, que permitam por exemplo:
+ - Procura por franquias ou universos cinematograficos, ordenando os filmes em uma sequência topológica 
+ - Buscar de filmes dirigidos por um certo(a) diretor(a) ou protagonizados por um determinado artista
+ - Descobrir em quais plataformas um determinado filme pode ser encontrado
+ - Encontrar os filmes melhores avaliados ou que receberam alguma premiação 
+ - Ranquear as plataformas com base nas avaliações dos filmes contidos nelas o tamanho do catalogo e o custo do serviço 
+
+Além disso, O MovieCatalogDS, poderá ser usados em estudos sobre a indústria cinematográfica, como por exemplo:
+
+* Reconhecer características em filmes que os fazem ter sucesso e com essas características, prever a bilheteria de novos filmes antes do seu lançamento.
+
+* Encontrar os filmes e gêneros mais populares ao longo das décadas e estudar a relação entre essa popularidade e a mudança nas tendências culturais ao longo do tempo.
+
 
 ## Slides da Apresentação
-> Coloque aqui o link para o PDF da apresentação
+[Slides](./slides/moviecatalogds.pdf)
 
-Estrutura de pastas:
-
-~~~
-├── README.md  <- arquivo apresentando a proposta
-│
-├── images     <- arquivo de imagens para esta etapa (se houver)
-│
-└── slides     <- arquivo de slides em formato PDF
