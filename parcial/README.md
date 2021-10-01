@@ -14,10 +14,10 @@ Filme é uma das formas de entretenimento mais populares e lucrativas, não é p
 
 Mesmo que os serviços de streaming ofereçam features de recomendações de filmes baseadas nos gostos do usuário, elas são disponíveis apenas para os assinantes das plataformas e limitadas ao catalogo da plataforma.
 
-Segundo o IMDB, a média de filmes produzidos por ano é de 2577, Empresas cinematográficas estão explorando maneiras de aumentar seu faturamento bruto de bilheteria. É difícil saber o que o público gosta antes de realmente ver suas críticas. Muitos fatores podem influenciar o gosto do público e a bilheteria bruta do filme, como diretor, elenco, gênero e orçamento. Assim, encontrar as características que fazem um filme ter sucesso, pode ajudar as produtoras a ajustar seu planejamento, melhorando o lucro e diminuindo os riscos com a produção. 
+Segundo o IMDB, a média de filmes produzidos por ano é de 2577. Empresas cinematográficas estão explorando maneiras de aumentar seu faturamento bruto de bilheteria. É difícil saber o que o público gosta antes de realmente ver suas críticas. Muitos fatores podem influenciar o gosto do público e a bilheteria bruta do filme, como diretor, elenco, gênero e orçamento. Assim, encontrar as características que fazem um filme ter sucesso, pode ajudar as produtoras a ajustar seu planejamento, melhorando o lucro e diminuindo os riscos com a produção. 
 
 Nesse contexto o MovieCatalogDS, busca oferecer uma base de dados sobre a indústria cinematográfica, permitindo a construção de mecanismos de busca, que permitam por exemplo:
- - Procura por franquias ou universos cinematograficos, ordenando os filmes em uma sequência topológica 
+ - Procurar por franquias ou universos cinematograficos, ordenando os filmes em uma sequência topológica 
  - Buscar de filmes dirigidos por um certo(a) diretor(a) ou protagonizados por um determinado artista
  - Descobrir em quais plataformas um determinado filme pode ser encontrado
  - Encontrar os filmes melhores avaliados ou que receberam alguma premiação 
