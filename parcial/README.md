@@ -1,12 +1,12 @@
 
 # Entrega Parcial do Projeto
 
-# Projeto `Catálogo de Filmes`
+# Projeto Movie Catalog Dataset
 
-# Equipe `MovieCatalogDS` - `MCDS`
-* `Maicon Gabriel de Oliveira` - `221329`
-* `Mylena Roberta dos Santos` - `222687`
-* `Jhonatan Cléto` - `256444`
+# Equipe MovieCatalogDS - MCDS
+* Maicon Gabriel de Oliveira - 221329
+* Mylena Roberta dos Santos - 222687
+* Jhonatan Cléto - 256444
 
 ## Resumo do Projeto
 
@@ -32,4 +32,3 @@ Além disso, O MovieCatalogDS, poderá ser usados em estudos sobre a indústria 
 
 ## Slides da Apresentação
 [Slides](./slides/moviecatalogds.pdf)
-
