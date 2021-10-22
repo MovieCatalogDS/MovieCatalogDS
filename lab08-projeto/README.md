@@ -11,38 +11,27 @@
 
 ## Perguntas de Pesquisa/Análise Combinadas e Respectivas Análises
 
-> Liste aqui as perguntas de pesquisa/análise combinadas e revisadas dos membros da equipe e respectivas análises.
->
 ### Pergunta/Análise 1
-> * Pergunta 1
->   
->   * Explicação sucinta da análise que será feita no grafo para atender à pergunta. Deve ser indicado explicitamente em qual das modalidades a análise se encaixa: centralidade; vulnerabilidade; comunidade/modularidade; motifs; predição de links.
 
-* Quais os filmes mais relevantes de acordo com a premiação mais importante da industria cinematografica?
-    * Para responder essa questão utilizaremos uma análise de centralidade, na qual a partir das pessoas que participam de um determinado filme, iremos aumentar a relevância do filme utilizando o número de premiações que cada um desses indivíduos recebeu aliado ao número de premiações que o própio filme recebeu. (PageRank)  
+* Quais são os filmes mais relevantes de acordo com a premiação mais importante da indústria cinematográfica?
+    * Para responder esta questão utilizaremos uma análise de centralidade, na qual iremos aumentar a relevância do filme (PageRank) a partir do número de Oscars recebidos pelas pessoas que participaram dele aliado ao número de Oscars que o próprio filme recebeu.
     * Possíveis dados a serem utilizados:
-        * Número de premiações recebidas por cada pessoa
-        * Número de premiações recebidas por cada filme
+        * Número de premiações recebidas por cada pessoa;
+        * Número de premiações recebidas por cada filme.
 
 ### Pergunta/Análise 2
-> * Pergunta 2
->   
->   * Explicação sucinta da análise que será feita no grafo para atender à pergunta. Deve ser indicado explicitamente em qual das modalidades a análise se encaixa: centralidade; vulnerabilidade; comunidade/modularidade; motifs; predição de links.
 
-* Quais os universos cinematograficos mais rentáveis?
-    * Para responder essa pergunta utilizaremos uma análise de comunidades, na qual cada universo representa uma comunidade de filmes e a partir deles iremos definir as mais rentáveis pela soma total dos lucros (receita - orçamento) dos filmes.
+* Quais são os universos cinematográficos mais rentáveis?
+    * Para responder esta pergunta utilizaremos uma análise de comunidade/modularidadade, na qual cada universo representa uma comunidade de filmes e, a partir de cada uma delas, iremos definir as mais rentáveis pela soma total dos lucros (receita - orçamento) dos filmes integrantes.
     * Possíveis dados a serem utilizados:
-        * Receita dos filmes
-        * Orçamento dos filmes
+        * Orçamento de cada um dos filmes;
+        * Receita de cada um dos filmes.
 
 ### Pergunta/Análise 3
-> * Pergunta 3
->   
->   * Explicação sucinta da análise que será feita no grafo para atender à pergunta. Deve ser indicado explicitamente em qual das modalidades a análise se encaixa: centralidade; vulnerabilidade; comunidade/modularidade; motifs; predição de links.
 
-* Quais as plataformas de Streaming com melhor custo-benefício relativo a qualidade dos filmes segundo a crítica?
-    * Para responder essa pergunta desenvolveremos um sistema de pontuação para as plataformas de streaming, utilizando as avaliações dos filmes que a plataforma possui, então classificaremos as plataformas de acordo com a maiores pontuações. A análise utilizada mesclaria conceitos de comunidades para identificar filmes em um intervalo de avaliações e conceitos de centralidade para aumentar a relevância das plataformas.
+* Quais são as plataformas de streaming com o melhor custo-benefício relativo à qualidade dos seus filmes?
+    * Para responder esta pergunta desenvolveremos um sistema de pontuação para as plataformas de streaming, utilizando as avaliações dos filmes que cada uma possui e então classificaremos as plataformas de acordo com as maiores pontuações. A análise utilizada mesclaria conceitos de comunidade/modularidade e de centralidade para, respectivamente, identificar filmes em um determinado intervalo de avaliações e aumentar a relevância das plataformas de streaming.
     * Possíveis dados a serem utilizados:
-        * Preço da assinatura das plataformas (assinatura com mais recursos)
-        * Número de filmes nas plataformas
-        * Avaliações dos filmes
+        * Preço da assinatura mais completa das plataformas;
+        * Número de filmes disponíveis nas plataformas;
+        * Avaliações dos filmes pela crítica especializada.
