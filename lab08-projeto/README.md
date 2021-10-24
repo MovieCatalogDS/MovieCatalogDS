@@ -21,7 +21,7 @@
 ### Pergunta/Análise 1
 
 * Sabendo que uma pessoa X trabalhou com uma pessoa Y no filme A e com uma pessoa Z no filme B, qual é a probabilidade das pessoas Y e Z trabalharem juntas em um filme C?
-  * Com base na projeção de uma rede que conecta as pessoas pelos filmes em que elas trabalharam (Figura 2), calcularemos pela análise de **motifs** a probabilidade de duas pessoas trabalharam juntas em um novo filme. Sendo que tais pessoas trabalharam com uma pessoa em comum, porém nunca trabalharam em conjunto. É importante ressaltar que a quantidade de filmes em comum entre duas pessoas será tratada como o peso da aresta que as conectam.
+  * Com base na projeção de uma rede que conecta as pessoas pelos filmes em que elas trabalharam (Figura 2), calcularemos pela análise de **predição de links** a probabilidade de duas pessoas trabalharam juntas em um novo filme. Sendo que tais pessoas trabalharam com uma pessoa em comum, porém nunca trabalharam em conjunto. É importante ressaltar que a quantidade de filmes em comum entre duas pessoas será tratada como o peso da aresta que as conectam.
 
 ### Pergunta/Análise 2
 
