@@ -29,4 +29,4 @@ Além disso, o Movie Catalog Dataset, poderá ser usados em estudos sobre a ind�
 
 
 ## Slides da Apresentação
-[Slides](./slides/ApresentaçãoInicial.pdf)
+* [Slides](./slides/ApresentaçãoInicial.pdf)
