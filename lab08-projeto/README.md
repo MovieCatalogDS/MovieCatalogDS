@@ -8,41 +8,27 @@
 ## Modelo Lógico Combinado do Banco de Dados de Grafos
 
 ![Modelo Lógico de Grafos](images/modelo-logico-grafos.png)
+*Figura 1 - Modelo Lógico de Grafos*
+
+![Projeção Pessoa-Filme](images/projecao-pessoa-filme.png) <br>
+*Figura 2 - Projeção de pessoas conectadas por filmes*
+
+![Projeção Gênero-Filme](images/projecao-genero-filme.png) <br>
+*Figura 3 - Projeção de gêneros conectados por filmes*
 
 ## Perguntas de Pesquisa/Análise Combinadas e Respectivas Análises
 
-> Liste aqui as perguntas de pesquisa/análise combinadas e revisadas dos membros da equipe e respectivas análises.
->
 ### Pergunta/Análise 1
-> * Pergunta 1
->   
->   * Explicação sucinta da análise que será feita no grafo para atender à pergunta. Deve ser indicado explicitamente em qual das modalidades a análise se encaixa: centralidade; vulnerabilidade; comunidade/modularidade; motifs; predição de links.
 
-* Quais os filmes mais relevantes de acordo com a premiação mais importante da industria cinematografica?
-    * Para responder essa questão utilizaremos uma análise de centralidade, na qual a partir das pessoas que participam de um determinado filme, iremos aumentar a relevância do filme utilizando o número de premiações que cada um desses indivíduos recebeu aliado ao número de premiações que o própio filme recebeu. (PageRank)  
-    * Possíveis dados a serem utilizados:
-        * Número de premiações recebidas por cada pessoa
-        * Número de premiações recebidas por cada filme
+* Sabendo que uma pessoa X trabalhou com uma pessoa Y no filme A e com uma pessoa Z no filme B, qual é a probabilidade das pessoas Y e Z trabalharem juntas em um filme C?
+  * Com base na projeção de uma rede que conecta as pessoas pelos filmes em que elas trabalharam (Figura 2), calcularemos pela análise de **predição de links** a probabilidade de duas pessoas trabalharam juntas em um novo filme. Sendo que tais pessoas trabalharam com uma pessoa em comum, porém nunca trabalharam em conjunto. É importante ressaltar que a quantidade de filmes em comum entre duas pessoas será tratada como o peso da aresta que as conectam.
 
 ### Pergunta/Análise 2
-> * Pergunta 2
->   
->   * Explicação sucinta da análise que será feita no grafo para atender à pergunta. Deve ser indicado explicitamente em qual das modalidades a análise se encaixa: centralidade; vulnerabilidade; comunidade/modularidade; motifs; predição de links.
 
-* Quais os universos cinematograficos mais rentáveis?
-    * Para responder essa pergunta utilizaremos uma análise de comunidades, na qual cada universo representa uma comunidade de filmes e a partir deles iremos definir as mais rentáveis pela soma total dos lucros (receita - orçamento) dos filmes.
-    * Possíveis dados a serem utilizados:
-        * Receita dos filmes
-        * Orçamento dos filmes
+* Quais são as combinações de gêneros mais comuns por década?
+  * Com base na projeção de uma rede que conecta os gêneros pelos filmes que se encaixam neles (Figura 3), de modo que os filmes foram filtrados por uma determinada década de lançamento, buscaremos combinações de gêneros que se destacam na rede pela análise de **comunidade/modularidade**.
 
 ### Pergunta/Análise 3
-> * Pergunta 3
->   
->   * Explicação sucinta da análise que será feita no grafo para atender à pergunta. Deve ser indicado explicitamente em qual das modalidades a análise se encaixa: centralidade; vulnerabilidade; comunidade/modularidade; motifs; predição de links.
 
-* Quais as plataformas de Streaming com melhor custo-benefício relativo a qualidade dos filmes segundo a crítica?
-    * Para responder essa pergunta desenvolveremos um sistema de pontuação para as plataformas de streaming, utilizando as avaliações dos filmes que a plataforma possui, então classificaremos as plataformas de acordo com a maiores pontuações. A análise utilizada mesclaria conceitos de comunidades para identificar filmes em um intervalo de avaliações e conceitos de centralidade para aumentar a relevância das plataformas.
-    * Possíveis dados a serem utilizados:
-        * Preço da assinatura das plataformas (assinatura com mais recursos)
-        * Número de filmes nas plataformas
-        * Avaliações dos filmes
+* Existe alguma relação entre a relevância das pessoas na indústria cinematográfica e quantidade de Oscars que as mesmas receberam?
+  * Com base na projeção de uma rede que conecta as pessoas pelos filmes em que elas trabalharam (Figura 2), estabeleceremos a relevância das pessoas por uma análise de **centralidade por grau** e relacionaremos a quantidade de Oscars recebidos por elas com as suas relevâncias.
