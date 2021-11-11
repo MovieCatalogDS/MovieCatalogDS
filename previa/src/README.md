@@ -5,9 +5,4 @@
 * Mylena Roberta dos Santos - 222687
 * Jhonatan Cléto - 256444
 
-# Etapas
-
-* [Entrega Parcial](parcial/)
-* [Laboratório 8 + Projeto](lab08-projeto/)
-* [Entrega Prévia](previa/)
-* [Entrega Final](final/)
+# Scripts Python para obtenção de dados da API do TMDB e IMDB
