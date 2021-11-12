@@ -15,7 +15,7 @@ Segundo o IMDB, a média de filmes produzidos por ano é de 2577. Empresas cinem
 Nesse contexto o Movie Catalog Dataset, objetiva-se a ser uma base de dados sobre a indústria cinematográfica, permitindo a construção de mecanismos de busca e análise a respeito de diversos aspectos relacionados aos cinema. Sendo que alguns deles são: gêneros, pessoas que participaram de filmes (diretores, roteiristas e atores) e os filmes por si só.
 
 ## Slides da Apresentação
-[Slides](slides/apresentação.pdf)
+[Slides](slides/apresentacao-previa.pdf)
 
 ## Modelo Conceitual Preliminar
 
