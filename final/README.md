@@ -53,47 +53,61 @@ Qualquer mídia usada no seu projeto: vídeo, imagens, animações, slides etc. 
 * Jhonatan Cléto - 256444
 
 ## Resumo do Projeto
-> Texto resumindo o projeto.
+
+Filmes são uma das formas de entretenimento mais populares e lucrativas, logo não é por acaso que atualmente existem inúmeros serviços de streaming de vídeo tentando pegar a sua fatia em um mercado crescente. Com a grande quantidade de serviços, além da popularidade das franquias e universos cinematográficos, a escolha de quais filmes assistir ou por onde começar a acompanhar uma certa franquia de filmes tem se tornado uma tarefa difícil.
+
+Mesmo que os serviços de streaming ofereçam features de recomendações de filmes baseadas nos gostos do usuário, elas são disponíveis apenas para os assinantes das plataformas e limitadas ao catálogo da plataforma.
+
+Segundo o IMDB, a média de filmes produzidos por ano é de 2577. Empresas cinematográficas estão explorando maneiras de aumentar seu faturamento bruto de bilheteria. É difícil saber o que o público gosta antes de realmente ver suas críticas. Muitos fatores podem influenciar o gosto do público e a bilheteria bruta de um filme, como diretor, elenco, gênero e orçamento. Assim, encontrar as características que fazem um filme ter sucesso, pode ajudar as produtoras a ajustar seu planejamento, melhorando o lucro e diminuindo os riscos com a produção. 
+
+Nesse contexto o Movie Catalog Dataset, objetiva-se a ser uma base de dados sobre a indústria cinematográfica, permitindo a construção de mecanismos de busca e análise a respeito de diversos aspectos relacionados aos cinema. Sendo que alguns deles são: gêneros, pessoas que participaram de filmes (diretores, roteiristas e atores) e os filmes por si só.
+
 
 ## Slides da Apresentação
 > Coloque aqui o link para o PDF da apresentação final
 
+
 ## Modelo Conceitual
 
-> Coloque aqui a imagem do modelo conceitual final em ER ou UML, como o exemplo a seguir:
-> ![ER Taxi](images/er-taxi.png)
+![Modelo Conceitual](images/modelo-conceitual.png)
+
 
 ## Modelos Lógicos
 
-> Coloque aqui os modelos lógicos dos bancos de dados relacionados aos modelos conceituais. Para o modelo relacional, sugere-se o formato a seguir. Para outros modelos lógicos, sugere-se aqueles apresentados em sala.
+Modelo Lógico Relacional
 
-> Exemplo de modelo lógico relacional
 ~~~
-PESSOA(_Código_, Nome, Telefone)
-ARMÁRIO(_Código_, Tamanho, Ocupante)
-  Ocupante chave estrangeira -> PESSOA(Código)
+FILME(_id_TMDB_, _id_IMDB_, titulo, titulo_original, sinopse, duracao, ano, classificacao, situacao, idioma_original, orcamento, receita, num_oscars)
+AVALIADOR(_id_, nome)
+AVALIACAO(_id_avaliador_, _id_filme_TMDB_, nota)
+  id_avaliador chave estrangeira -> AVALIADOR(id)
+  id_filme_TMDB chave estrangeira -> FILME(id_TMDB)
+FRANQUIA(_nome_)
+FRANQUIAFILME(_nome_franquia_, _id_filme_TMDB_)
+  nome_franquia chave estrangeira -> FRANQUIA(nome)
+  id_filme_TMDB chave estrangeira -> FILME(id_TMDB)
+GENERO(nome)
+GENEROFILME(_nome_genero_, _id_filme_TMDB_)
+  nome_genero chave estrangeira -> GENERO(nome)
+  id_filme_TMDB chave estrangeira -> FILME(id_TMDB)
+PESSOA(_id_TMDB_, _id_IMDB_, nome, nacionalidade, num_oscars)
+PESSOAFILME(_id_pessoa_TMDB_, _id_filme_TMDB_, ator, diretor, roteirista)
+  id_pessoa_TMDB chave estrangeira -> PESSOA(id_TMDB)
+  id_filme_TMDB chave estrangeira -> FILME(id_TMDB)
+SEQUENCIA(_id_filme_TMDB_, _id_filme_sequencia_TMDB_)
+  id_filme_TMDB chave estrangeira -> FILME(id_TMDB)
+  id_filme_sequencia_TMDB chave estrangeira -> FILME(id_TMDB)
+STREAMING(_nome_)
+STREAMINGFILME(_nome_streaming_, _id_filme_TMDB)
+  nome_streaming chave estrangeira -> STREAMING(nome)
+  id_filme_TMDB chave estrangeira -> FILME(id_TMDB)
 ~~~
 
-> Para o modelo de grafos de propriedades, utilize este
-> [modelo de base](https://docs.google.com/presentation/d/10RN7bDKUka_Ro2_41WyEE76Wxm4AioiJOrsh6BRY3Kk/edit?usp=sharing) para construir o seu.
-> Coloque a imagem do PNG do seu modelo lógico como ilustrado abaixo (a imagem estará na pasta `image`):
->
-> ![Modelo Lógico de Grafos](images/modelo-logico-grafos.png)
 
-> Para o modelo de grafos de conhecimento, utilize a abordagem
-> (recurso, propriedade, valor) para apresentar seu grafo exemplo.
-> Coloque a imagem do PNG do seu modelo lógico como ilustrado abaixo (a imagem estará na pasta `image).
->
-> Você pode usar um grafo ilustrando as classes, como este:
-> ![Modelo Lógico de Grafos de Conhecimento](images/grafo-conhecimento-classes.png)
->
-> Além de outro com exemplo de instâncias, como este:
-> ![Modelo Lógico de Grafos](images/grafo-conhecimento-exemplo.png)
+Modelo Lógico de Grafos - Grafo de Propriedades
 
-> Para modelos hierárquicos (XML e JSON), utilize um formato
-> conforme o abaixo:
+![Modelo Lógico de Grafos](images/modelo-logico-grafos.png)
 
-> ![Modelo Lógico Hierárquico](images/modelo-logico-hierarquico.png)
 
 ## Dataset Publicado
 > Elencar os arquivos/bases preliminares dos datasets serão publicados.
