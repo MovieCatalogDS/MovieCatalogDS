@@ -77,7 +77,7 @@ Nesse contexto o Movie Catalog Dataset, objetiva-se a ser uma base de dados sobr
 Modelo Lógico Relacional
 
 ~~~
-FILME(_id_TMDB_, _id_IMDB_, titulo, titulo_original, sinopse, duracao, ano, classificacao, situacao, idioma_original, orcamento, receita, num_oscars)
+FILME(_id_TMDB_, id_IMDB, titulo, titulo_original, sinopse, duracao, ano, classificacao, situacao, idioma_original, orcamento, receita, num_oscars)
 AVALIADOR(_id_, nome)
 AVALIACAO(_id_avaliador_, _id_filme_TMDB_, nota)
   id_avaliador chave estrangeira -> AVALIADOR(id)
@@ -90,7 +90,7 @@ GENERO(nome)
 GENEROFILME(_nome_genero_, _id_filme_TMDB_)
   nome_genero chave estrangeira -> GENERO(nome)
   id_filme_TMDB chave estrangeira -> FILME(id_TMDB)
-PESSOA(_id_TMDB_, _id_IMDB_, nome, nacionalidade, num_oscars)
+PESSOA(_id_TMDB_, id_IMDB, nome, nacionalidade, num_oscars)
 PESSOAFILME(_id_pessoa_TMDB_, _id_filme_TMDB_, ator, diretor, roteirista)
   id_pessoa_TMDB chave estrangeira -> PESSOA(id_TMDB)
   id_filme_TMDB chave estrangeira -> FILME(id_TMDB)
