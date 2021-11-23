@@ -114,7 +114,18 @@ Modelo Lógico de Grafos - Grafo de Propriedades
 
 título do arquivo/base | link | breve descrição
 ----- | ----- | -----
-`<título do arquivo/base>` | `<link para arquivo/base>` | `<breve descrição do arquivo/base>`
+Filme | [Filme](./data/processed/Filme.csv) | Tabela com dados de filmes.
+Sequencia | [Sequencia](./data/processed/Sequencia.csv) | Relação de sequencia entre filmes.
+Franquia | [Franquia](./data/processed/Franquia.csv) | Lista das franquias das quais os filmes na tabela Filme pertêncem.
+FranquiaFilme | [FranquiaFilme](./data/processed/FranquiaFilme.csv) | Relaciona franquias com seus respectivos filmes.
+Genero | [Genero](./data/processed/Genero.csv) | Lista de Gêneros obtidos no TMDB.
+GeneroFilme | [GeneroFilme](./data/processed/GeneroFilme.csv) | Cada linha na tabela relaciona um filme com um gênero que ele possui.
+Pessoa | [Pessoa](./data/processed/Pessoa.csv) | Tabela com dados sobre Pessoas que participam da produção de filmes da tabela Filme.
+PessoaFilme | [PessoaFilme](./data/processed/PessoaFilme.csv) | Relaciona pessoas e filmes indicando o tipo de participação da pessoa, Ator, Diretor ou Roterista.
+Avaliador | [Avaliador](./data/processed/Avaliador.csv) | Lista com alguns portais de avaliação de filmes.
+Avaliacao | [Avaliacao](./data/processed/Avaliacao.csv) | Armazena as avaliações de filmes na tabela Filmes obtida dos avaliadores na tabela Avaliador.
+Streaming | [Streaming](./data/processed/Streaming.csv) | Lista de plataformas de Streaming de filmes obtidas no TMDB.
+StreamingFilme | [StreamingFilme](./data/processed/StreamingFilme.csv) | Cada linha da tabela relaciona um filme com uma plataforma na qual ele pode ser encontrado.
 
 > Os arquivos finais do dataset publicado devem ser colocados na pasta `data`, em subpasta `processed`. Outros arquivos serão colocados em subpastas conforme seu papel (externo, interim, raw). A diferença entre externo e raw é que o raw é em formato não adaptado para uso. A pasta `raw` é opcional, pois pode ser substituída pelo link para a base original da seção anterior.
 > Coloque arquivos que não estejam disponíveis online e sejam acessados pelo notebook. Relacionais (usualmente CSV), XML, JSON e CSV ou triplas para grafos.
@@ -125,7 +136,9 @@ título do arquivo/base | link | breve descrição
 
 título da base | link | breve descrição
 ----- | ----- | -----
-`<título da base>` | `<link para a página da base>` | `<breve descrição da base>`
+TMDB | [TMDB](https://www.themoviedb.org/?language=pt-BR) |  Base de dados gratuita e de código aberto sobre Filmes e Séries de TV.
+IMDB | [IMDB](https://www.imdb.com) |  Base de dados online de informação sobre cinema TV, música e games.
+RT_db | [TODO](https://www.rottentomatoes.com/) |  Dataset com avaliações de filmes obtidas do Rotten Tomatoes.
 
 ## Detalhamento do Projeto
 > Apresente aqui detalhes do processo de construção do dataset e análise. Nesta seção ou na seção de Perguntas podem aparecer destaques de código como indicado a seguir. Note que foi usada uma técnica de highlight de código, que envolve colocar o nome da linguagem na abertura de um trecho com `~~~`, tal como `~~~python`.
