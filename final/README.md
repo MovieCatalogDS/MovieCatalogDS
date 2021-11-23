@@ -116,15 +116,15 @@ título do arquivo/base | link | breve descrição
 ----- | ----- | -----
 Filme | [Filme](./data/processed/Filme.csv) | Tabela com dados de filmes.
 Sequencia | [Sequencia](./data/processed/Sequencia.csv) | Relação de sequencia entre filmes.
-Franquia | [Franquia](./data/processed/Franquia.csv) | Lista das franquias das quais os filmes na tabela Filme pertêncem.
+Franquia | [Franquia](./data/processed/Franquia.csv) | Lista das franquias que contêm os filmes na tabela Filme.
 FranquiaFilme | [FranquiaFilme](./data/processed/FranquiaFilme.csv) | Relaciona franquias com seus respectivos filmes.
-Genero | [Genero](./data/processed/Genero.csv) | Lista de Gêneros obtidos no TMDB.
+Genero | [Genero](./data/processed/Genero.csv) | Lista de gêneros obtidos no TMDB.
 GeneroFilme | [GeneroFilme](./data/processed/GeneroFilme.csv) | Cada linha na tabela relaciona um filme com um gênero que ele possui.
 Pessoa | [Pessoa](./data/processed/Pessoa.csv) | Tabela com dados sobre Pessoas que participam da produção de filmes da tabela Filme.
-PessoaFilme | [PessoaFilme](./data/processed/PessoaFilme.csv) | Relaciona pessoas e filmes indicando o tipo de participação da pessoa, Ator, Diretor ou Roterista.
+PessoaFilme | [PessoaFilme](./data/processed/PessoaFilme.csv) | Relaciona pessoas e filmes indicando o tipo de participação da pessoa: Ator, Diretor ou Roterista.
 Avaliador | [Avaliador](./data/processed/Avaliador.csv) | Lista com alguns portais de avaliação de filmes.
 Avaliacao | [Avaliacao](./data/processed/Avaliacao.csv) | Armazena as avaliações de filmes na tabela Filmes obtida dos avaliadores na tabela Avaliador.
-Streaming | [Streaming](./data/processed/Streaming.csv) | Lista de plataformas de Streaming de filmes obtidas no TMDB.
+Streaming | [Streaming](./data/processed/Streaming.csv) | Lista de plataformas de streaming de filmes obtidas no TMDB.
 StreamingFilme | [StreamingFilme](./data/processed/StreamingFilme.csv) | Cada linha da tabela relaciona um filme com uma plataforma na qual ele pode ser encontrado.
 
 > Os arquivos finais do dataset publicado devem ser colocados na pasta `data`, em subpasta `processed`. Outros arquivos serão colocados em subpastas conforme seu papel (externo, interim, raw). A diferença entre externo e raw é que o raw é em formato não adaptado para uso. A pasta `raw` é opcional, pois pode ser substituída pelo link para a base original da seção anterior.
