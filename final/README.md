@@ -64,12 +64,13 @@ Nesse contexto o Movie Catalog Dataset, objetiva-se a ser uma base de dados sobr
 
 
 ## Slides da Apresentação
-> Coloque aqui o link para o PDF da apresentação final
+
+[Slides](./slides/apresentacao-final.pdf)
 
 
 ## Modelo Conceitual
 
-![Modelo Conceitual](images/modelo-conceitual.png)
+![Modelo Conceitual](./images/modelo-conceitual.png)
 
 
 ## Modelos Lógicos
@@ -106,11 +107,10 @@ STREAMINGFILME(_nome_streaming_, _id_filme_TMDB)
 
 Modelo Lógico de Grafos - Grafo de Propriedades
 
-![Modelo Lógico de Grafos](images/modelo-logico-grafos.png)
+![Modelo Lógico de Grafos](./images/modelo-logico-grafos.png)
 
 
 ## Dataset Publicado
-> Elencar os arquivos/bases preliminares dos datasets serão publicados.
 
 título do arquivo/base | link | breve descrição
 ----- | ----- | -----
@@ -127,20 +127,16 @@ Avaliacao | [Avaliacao](./data/processed/Avaliacao.csv) | Armazena as avaliaçõ
 Streaming | [Streaming](./data/processed/Streaming.csv) | Lista de plataformas de streaming de filmes obtidas no TMDB.
 StreamingFilme | [StreamingFilme](./data/processed/StreamingFilme.csv) | Cada linha da tabela relaciona um filme com uma plataforma na qual ele pode ser encontrado.
 
-> Os arquivos finais do dataset publicado devem ser colocados na pasta `data`, em subpasta `processed`. Outros arquivos serão colocados em subpastas conforme seu papel (externo, interim, raw). A diferença entre externo e raw é que o raw é em formato não adaptado para uso. A pasta `raw` é opcional, pois pode ser substituída pelo link para a base original da seção anterior.
-> Coloque arquivos que não estejam disponíveis online e sejam acessados pelo notebook. Relacionais (usualmente CSV), XML, JSON e CSV ou triplas para grafos.
-> Este é o conjunto mínimo de informações que deve constar na disponibilização do Dataset, mas a equipe pode enriquecer esta seção.
-
 ## Bases de Dados
-> Elencar as bases de dados fonte utilizadas no projeto.
 
 título da base | link | breve descrição
 ----- | ----- | -----
-TMDB | [TMDB](https://www.themoviedb.org/?language=pt-BR) |  Base de dados gratuita e de código aberto sobre Filmes e Séries de TV.
-IMDB | [IMDB](https://www.imdb.com) |  Base de dados online de informação sobre cinema TV, música e games.
-RT_db | [TODO](https://www.rottentomatoes.com/) |  Dataset com avaliações de filmes obtidas do Rotten Tomatoes.
+TMDB | [TMDB](https://www.themoviedb.org/?language=pt-BR) |  Base de dados gratuita e de código aberto sobre filmes e séries de TV
+IMDb | [IMDb](https://www.imdb.com) |  Base de dados online de informação sobre cinema, TV, música e games
+RT_db | [TODO](https://www.rottentomatoes.com/) |  Dataset com avaliações de filmes obtidas do Rotten Tomatoes
 
 ## Detalhamento do Projeto
+
 > Apresente aqui detalhes do processo de construção do dataset e análise. Nesta seção ou na seção de Perguntas podem aparecer destaques de código como indicado a seguir. Note que foi usada uma técnica de highlight de código, que envolve colocar o nome da linguagem na abertura de um trecho com `~~~`, tal como `~~~python`.
 > Os destaques de código devem ser trechos pequenos de poucas linhas, que estejam diretamente ligados a alguma explicação. Não utilize trechos extensos de código. Se algum código funcionar online (tal como um Jupyter Notebook), aqui pode haver links. No caso do Jupyter, preferencialmente para o Binder abrindo diretamente o notebook em questão.
 
@@ -166,68 +162,136 @@ plt.show();
 > Se for notebook, ele estará dentro da pasta `notebook`. Se por alguma razão o código não for executável no Jupyter, coloque na pasta `src` (por exemplo, arquivos do Orange ou Cytoscape). Se as operações envolverem queries executadas atraves de uma interface de um SGBD não executável no Jupyter, como o Cypher, apresente na forma de markdown.
 
 ## Evolução do Projeto
+
 > Relatório de evolução, descrevendo as evoluções na modelagem do projeto, dificuldades enfrentadas, mudanças de rumo, melhorias e lições aprendidas. Referências aos diagramas, modelos e recortes de mudanças são bem-vindos.
 > Podem ser apresentados destaques na evolução dos modelos conceitual e lógico. O modelo inicial e intermediários (quando relevantes) e explicação de refinamentos, mudanças ou evolução do projeto que fundamentaram as decisões.
 > Relatar o processo para se alcançar os resultados é tão importante quanto os resultados.
 
 ## Perguntas de Pesquisa/Análise Combinadas e Respectivas Análises
 
-> Apresente os resultados da forma mais rica possível, com gráficos e tabelas. Mesmo que o seu código rode online em um notebook, copie para esta parte a figura estática. A referência a código e links para execução online pode ser feita aqui ou na seção de detalhamento do projeto (o que for mais pertinente).
-
-> Liste aqui as perguntas de pesquisa/análise e respectivas análises. Nem todas as perguntas precisam de queries que as implementam. É possível haver perguntas em que a solução é apenas descrita para demonstrar o potencial da base. Abaixo são ilustradas três perguntas, mas pode ser um número maior a critério da equipe.
->
 ### Perguntas/Análise com Resposta Implementada
-
-> As respostas às perguntas podem devem ser ilustradas da forma mais rica possível com tabelas resultantes, grafos ou gráficos que apresentam os resultados. Os resultados podem ser analisados e comentados. Veja um exemplo de figura ilustrando uma comunidade detectada no Cytoscape:
-
-> ![Comunidade no Cytoscape](images/cytoscape-comunidade.png)
 
 #### Pergunta/Análise 1
 
 * Os filmes que mais fizeram sucesso com o público também são aqueles que mais fizeram sucesso com a crítica?
   
-  * De modo a responder à esta pergunta, foi necessário analisarmos as receitas e as avaliações de todos os filmes obtidos. Conforme ilustrado pelo conjunto de queries SQL a seguir, calculamos a nota média de cada um dos filmes, tomando filmes julgados por todos os avaliadores considerados (TMDB, IMDb e Rotten Tomatoes), e depois geramos duas tabelas. A primeira tabela ordenada decrescentemente por receita e a segunda tabela ordenada decrescentemente por nota média. Os resultados mostraram que os filmes que mais fizeram sucesso com esses grupos, mais especificamente os 10 primeiros, são distintos entre si.
+  * De modo a responder à esta pergunta, foi necessário analisarmos as receitas e as avaliações de todos os filmes obtidos. Conforme o conjunto de queries SQL a seguir, a partir das bases **Filme** e **Avaliacao**, calculamos a nota média de cada um dos filmes, tomando somente aqueles julgados por todos os avaliadores considerados (TMDB, IMDb e Rotten Tomatoes), e depois geramos duas tabelas que contam com as colunas: nome do filme, receita e nota média.
 
-  ~~~SQL
-  /* Relação entre sucesso com o público (receita)
-   e sucesso com a crítica (nota média) dos filmes */
+    ~~~sql
+    /* Relação entre sucesso com o público (receita)
+    e sucesso com a crítica (nota média) dos filmes */
 
-  DROP TABLE IF EXISTS FilmeReceitaNota;
-  DROP TABLE IF EXISTS FilmeAvaliacao;
+    DROP TABLE IF EXISTS FilmeReceitaNota;
+    DROP TABLE IF EXISTS FilmeAvaliacao;
 
-  CREATE VIEW FilmeAvaliacao AS
-      SELECT A.id_filme, SUM(A.nota) nota_total, COUNT(A.id_filme) qtd_avaliacoes
-          FROM Avaliacao A
-          GROUP BY A.id_filme;
+    CREATE VIEW FilmeAvaliacao AS
+        SELECT A.id_filme, SUM(A.nota) nota_total, COUNT(A.id_filme) qtd_avaliacoes
+            FROM Avaliacao A
+            GROUP BY A.id_filme;
 
-  CREATE VIEW FilmeReceitaNota AS
-      SELECT A.id_filme, F.titulo, F.ano, F.receita, (A.nota_total / A.qtd_avaliacoes) nota_media
-          FROM Filme F, FilmeAvaliacao A
-          WHERE A.id_filme = F.id_TMDB
-            AND qtd_avaliacoes > 2;
+    CREATE VIEW FilmeReceitaNota AS
+        SELECT A.id_filme, F.titulo, F.ano, F.receita, (A.nota_total / A.qtd_avaliacoes) nota_media
+            FROM Filme F, FilmeAvaliacao A
+            WHERE A.id_filme = F.id_TMDB
+              AND qtd_avaliacoes > 2;
 
-  -- Ordenação decrescente por receita
-  SELECT titulo, receita, nota_media 
-      FROM FilmeReceitaNota
-      ORDER BY receita DESC LIMIT 10;
+    -- Ordenação decrescente por receita
+    SELECT titulo, receita, nota_media 
+        FROM FilmeReceitaNota
+        ORDER BY receita DESC LIMIT 10;
 
-  -- Ordenação decrescente por nota média
-  SELECT titulo, receita, nota_media
-      FROM FilmeReceitaNota
-      ORDER BY nota_media DESC LIMIT 10;
-  ~~~
+    -- Ordenação decrescente por nota média
+    SELECT titulo, receita, nota_media
+        FROM FilmeReceitaNota
+        ORDER BY nota_media DESC LIMIT 10;
+    ~~~
+
+  * Seguem abaixo as tabelas resultantes que mostram os dez primeiros filmes levando em consideração, respectivamente, a ordenação decrescente de receitas e a ordenação decrescente de notas médias.
+
+    ![Filmes_Receita](./images/filmes_receita.png)
+
+    ![Filmes_NotaMedia](./images/filmes_notamedia.png)
+
+    * Conforme podemos observar pelos dez primeiros colocados de cada uma das tabelas, os filmes que mais agradaram o público certamente não são os mesmos que mais agradaram a crítica. Assim, é possível afirmar que o público e a crítica são dois polos distintos e, muito provavelmente, as características dos filmes que fazem sucesso com cada um deles são distintas.
+
 
 #### Pergunta/Análise 2
-> * Pergunta 2
->   
->   * Explicação sucinta da análise que será feita e conjunto de queries que
->     responde à pergunta.
+
+* Como os gêneros dos filmes se relacionam em uma determinada década?
+  
+  * Para responder à esta pergunta, foi necessário analisarmos os gêneros que os classificam os filmes contidos no *dataset*, restringindo os filmes em questão pela década em que foram lançados. Ademais, utilizamos o Neo4j e também o Cytoscape a fim de gerarmos as respostas desejadas.
+  
+    * No Neo4j, a partir das bases **Filme** e **GeneroFilme**, geramos um grafo homogêneo que relaciona os gêneros através dos filmes classificados por eles. Partindo então desse grafo, produzimos grafos homogêneos em que os gêneros estavam conectados apenas por filmes lançados em uma década específica. De modo que o peso das arestas entre dois gêneros adjacentes representa a quantidade de filmes lançados que pode ser classificado por ambos. Produzidos os grafos, geramos tabelas no formato CSV que representam as conexões entre os gêneros e também seus pesos.
+
+    ~~~cypher
+    // Grafo homogêneo da relação entre gêneros na década de 2000
+
+    MATCH (g1:Genero)<-[a]-(f:Filme)-[b]->(g2:Genero)
+    WHERE 2000 < toInteger(f.ano) <= 2010 AND g1.nome <> g2.nome
+    MERGE (g1)<-[r:Cogen_2000]->(g2)
+    ON CREATE SET r.num_filmes = 1
+    ON MATCH SET r.num_filmes=r.num_filmes+1
+
+    // Tabela que representa o grafo da relação entre gêneros na década de 2000
+
+    MATCH (g1:Genero)<-[e:Cogen_2000]->(g2:Genero) RETURN g1.nome AS source, g2.nome AS target, e.num_filmes as weight
+    ~~~
+  
+    * No Cytoscape, com base nos arquivos CSV gerados pelo Neo4j, construímos os grafos e aplicamos sobre eles análises de centralidade por grau e centralidade por *betweenness*. Sendo que, pelas configurações de visualização, definimos que a centralidade por grau é proporcional ao tamanho dos nós, a centralidade por *betweenness* é mostrada pela cor dos nós e a grossura de uma aresta é proporcional ao seu peso.
+  
+  * Seguem abaixo as figuras que ilustram os grafos homogêneos que representam as relações entre os gêneros dos filmes lançados nas décadas de 1990 e 2000, respectivamente.
+
+    ![Gêneros_1990](./images/co_genre_1990.png)
+
+    ![Gêneros_2000](./images/co_genre_2000.png)
+
+    * Analisando os grafos, podemos observar que as relações entre os gêneros muda drasticamente de uma década para a outra. Por exemplo, em 1990, Aventura é gênero que mais relevante e a combinação entre Drama e Romance é uma das mais recorrentes. Em 2000, por sua vez, Ação é o gênero de destaque e a combinação de Comédia e Romance é uma das mais comuns.
+
 
 #### Pergunta/Análise 3
-> * Pergunta 3
->   
->   * Explicação sucinta da análise que será feita e conjunto de queries que
->     responde à pergunta.
+
+* Quais são as comunidades de pessoas que podem ser mapeadas? E quais são as pessoas mais relevantes dentre elas?
+  
+  * De modo a responder à esta pergunta, foi necessário analisarmos todas as pessoas (atores, diretores e roteiristas) que participaram dos filmes obtidos. Ademais, utilizamos o Neo4j e também o Cytoscape a fim de gerarmos as respostas desejadas.
+  
+    * No Neo4j, a partir das bases **Filme** e **PessoaFilme**, geramos um grafo homogêneo que relaciona pessoas através dos filmes em que elas colaboraram. De modo que o peso das arestas entre duas pessoas adjacentes representa a quantidade de filmes em que ambas trabalharam juntas. Em seguida, aplicamos sobre esse grafo análises de PageRank e também de comunidade. Feitas as análises, geramos uma tabela no formato CSV que representa as conexões entre as pessoas e também seus pesos.
+
+    ~~~cypher
+    // Cálculo dos scores do PageRank no grafo
+
+    CALL gds.pageRank.stream({
+    nodeQuery:'MATCH (p:Pessoa) RETURN id(p) as id',
+    relationshipQuery:'MATCH (p1:Pessoa)-[r:Coparticipa]->(p2:Pessoa)
+    WHERE r.num_filmes/2 >= 5
+    RETURN id(p1) as source, id(p2) as target,r.num_filmes/2 as weight',
+    relationshipWeightProperty: 'weight'
+    })
+    YIELD nodeId,score
+    return gds.util.asNode(nodeId).nome AS nome, score AS pagerank
+    ORDER BY pagerank DESC
+    LIMIT 10000
+
+    // Geração das comunidades de pessoas no grafo
+
+    CALL gds.louvain.stream('communityGraph')
+    YIELD nodeId, communityId
+    MATCH (p:Pessoa {id: gds.util.asNode(nodeId).id})
+    SET p.comunidade = communityId
+    ~~~
+
+    * No Cytoscape, com base no arquivo CSV gerados pelo Neo4j, construímos o grafo e, pelas configurações de visualização, definimos que o *score* do PageRank de cada nó é proporcional ao seu tamanho e a grossura de uma aresta é proporcional ao seu peso.
+
+  * A figura a seguir ilustra o grafo que relaciona comunidades de pessoas por completo.
+
+      ![Comunidades_Pessoas](./images/comunidade_pessoas.png)
+
+  * Segue abaixo a figura que ilustra em destaque o recorte do grafo que representa a comunidade (cor vermelha) do universo cinematográfico da Marvel.
+
+      ![Comunidade_Marvel](./images/comunidade_mcu.png)
+
+    * Na comunidade em questão, podemos observar que Stan Lee é a pessoa mais relevante, estando conectado a outras dezenas de pessoas de colaboraram juntas nos filmes deste universo.
+
+**\* Observação:** é válido ressaltar que, devido à enorme quantidade de dados relativos a pessoas na versão final de nosso *dataset*, foi necessário considerarmos as tabelas da versão inicial - 100 Filmes - para que fosse possível realizar os processamentos requeridos para a obtenção das respostas apresentadas para esta figura.
 
 ### Perguntas/Análise Propostas mas Não Implementadas
 
@@ -235,21 +299,22 @@ plt.show();
 
 * Sabendo que uma pessoa X trabalhou com uma pessoa Y no filme A e com uma pessoa Z no fime B, qual é a probabilidade das pessoas Y e Z trabalharem juntas em um filme C?
   
-  * Com base em nosso dataset, pode ser gerado um grafo homogêneo que relaciona pessoas (atores, diretores e roteiristas) através filmes em que elas trabalharam juntas. Realizando um análise de predição de link sobre esse grafo, é possível calcular a probabilidade de duas pessoas colaborarem em um novo filme. Sendo que tais pessoas trabalharam com uma pessoa em comum, mas nunca colaboraram juntas. A resposta dessa pergunta pode ser relevante para facilitar o processo de casting - seleção de atores, roteiristas, etc. - de um filme em pré-produção, por exemplo.
+  * Com base em nosso *dataset*, pode ser gerado um grafo homogêneo que relaciona pessoas (atores, diretores e roteiristas) através filmes em que elas trabalharam juntas. Realizando um análise de predição de link sobre esse grafo, é possível calcular a probabilidade de duas pessoas colaborarem em um novo filme. Sendo que tais pessoas trabalharam com uma pessoa em comum, mas nunca colaboraram juntas. A resposta dessa pergunta pode ser relevante para facilitar o processo de *casting* - seleção de atores, roteiristas, etc. - de um filme em pré-produção, por exemplo.
 
 
 #### Pergunta/Análise 2
 
 * Quais são as características de um filme que faz sucesso com o público?
 
-> * Pergunta 2
->   
->   * Explicação em linhas gerais de como a base pode ser usada para responder esta pergunta e a sua relevância.
+  * A partir de nosso *dataset*, utilizando *queries* SQL, é possível elencar os filmes com as maiores receitas, isto é, que fizeram mais sucesso com público nos cinemas. Definindo um recorte temporal que tem início em 2018, por exemplo, pode-se verificar quais foram os filmes que mais lucraram nos últimos anos, sendo possível verificar quais são seus gêneros, seu orçamento, as pessoas envolvidas em sua produção, dentre outros aspectos. Em posse dessas informações, um estúdio da indústria cinematográfica pode ser capaz de desenhar o "mapa do tesouro" do sucesso com o público e identificar quais são os requisitos para aumentar seu lucro e reconhecimento, por exemplo.
 
 #### Pergunta/Análise 3
 
 * Quem são as pessoas mais relevantes em cada gênero em uma determinada década?
   
-  * Com base em nosso dataset, pode ser gerado um grafo homogêneo que relaciona pessoas (atores, diretores e roteiristas) através do gênero que classifica os filmes em que elas trabalharam juntas. Para delimitar a década de interesse, basta que o ano de lançamento de cada um dos filmes seja verificado na montagem do grafo. Fazendo recortes desse grafo que admitem somente pessoas que estão conectadas por um mesmo gênero, podemos aplicar uma análise de centralidade por PageRank para determinar as pessoas mais relevantes do gênero em questão. A resposta dessa pergunta pode ser relevante para o estudo da história da indústria cinematográfica, por exemplo.
+  * Com base em nosso *dataset*, pode ser gerado um grafo homogêneo que relaciona pessoas (atores, diretores e roteiristas) através do gênero que classifica os filmes em que elas trabalharam juntas. Para delimitar a década de interesse, basta que o ano de lançamento de cada um dos filmes seja verificado na montagem do grafo. Fazendo recortes desse grafo que admitem somente pessoas que estão conectadas por um mesmo gênero, podemos aplicar uma análise de centralidade por PageRank para determinar as pessoas mais relevantes do gênero em questão. A resposta dessa pergunta pode ser relevante para o estudo da história da indústria cinematográfica, por exemplo.
 
 > Coloque um link para o arquivo do notebook que executa o conjunto de queries. Ele estará dentro da pasta `notebook`. Se por alguma razão o código não for executável no Jupyter, coloque na pasta `src`. Se as queries forem executadas atraves de uma interface de um SGBD não executável no Jupyter, como o Cypher, apresente na forma de markdown.
+
+* Conjunto de queries SQL: [](./notebooks/.ipynb)
+* Conjunto de queries Cypher: [](./src/.md)
