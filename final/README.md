@@ -388,6 +388,16 @@ def main(args):
 
     // Geração das comunidades de pessoas no grafo
 
+    CALL gds.graph.create(
+      'communityGraph',
+      'Pessoa',
+      {
+        Coparticipa: {
+          orientation: 'UNDIRECTED'
+        }
+      }
+    )
+
     CALL gds.louvain.stream('communityGraph')
     YIELD nodeId, communityId
     MATCH (p:Pessoa {id: gds.util.asNode(nodeId).id})
