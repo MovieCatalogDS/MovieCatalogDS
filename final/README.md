@@ -156,7 +156,7 @@ O uso da biblioteca IMDbPY, foi limitado à coleta de informações sobre a clas
 
 Para obter as informações dos filmes no TMDB, precisamos primeiro consultar o recurso Discover da API, no qual conseguiamos obter listas de filmes ordenados por alguma caracterista como, popularidade, data de lançamento e receita. Nessa etapa optamos por obter filmes ordenados de maneira decrescente pelas suas receitas. As listas de filmes no Discover são distibuidas em páginas, com cerca de 20 filmes cada, assim para obter informações preliminares sobre N filmes são necessárias aproximadamente N/20 páginas do Discover, ou seja N/20 requisições a API. Em seguida utilizamos o recurso Movie da API para obter todas as informações disponíveis no TMDB sobre os filmes em cada página.
 
-Segue Abaixo o código utilizado para obter as informações sobre filmes.
+Trecho de código utilizado para obter as informações sobre filmes:
 
 ~~~python
 # Retorna um dicionário com todos os detalhes que a api do TMDB fornece
@@ -250,7 +250,7 @@ def main(args):
   ppp = num_pages//num_pss + 1
   pr_array = list()
 
-  # Instancia um processo para cada núcleo no computador
+  # Cria um processo para cada núcleo no computador
   # Cada processo constroi um pedaço da tabela
   for i in range(num_pss):
       t_name = f'data/{table_name}_{i}.csv'
@@ -349,7 +349,8 @@ def main(args):
 
     // Tabela que representa o grafo da relação entre gêneros na década de 2000
 
-    MATCH (g1:Genero)<-[e:Cogen_2000]->(g2:Genero) RETURN g1.nome AS source, g2.nome AS target, e.num_filmes as weight
+    MATCH (g1:Genero)<-[e:Cogen_2000]->(g2:Genero)
+    RETURN g1.nome AS source, g2.nome AS target, e.num_filmes as weight
     ~~~
   
     * No Cytoscape, com base nos arquivos CSV gerados pelo Neo4j, construímos os grafos e aplicamos sobre eles análises de centralidade por grau e centralidade por *betweenness*. Sendo que, pelas configurações de visualização, definimos que a centralidade por grau é proporcional ao tamanho dos nós, a centralidade por *betweenness* é mostrada pela cor dos nós e a grossura de uma aresta é proporcional ao seu peso.
@@ -374,17 +375,16 @@ def main(args):
     ~~~cypher
     // Cálculo dos scores do PageRank no grafo
 
-    CALL gds.pageRank.stream({
-    nodeQuery:'MATCH (p:Pessoa) RETURN id(p) as id',
-    relationshipQuery:'MATCH (p1:Pessoa)-[r:Coparticipa]->(p2:Pessoa)
-    WHERE r.num_filmes/2 >= 5
-    RETURN id(p1) as source, id(p2) as target,r.num_filmes/2 as weight',
-    relationshipWeightProperty: 'weight'
-    })
-    YIELD nodeId,score
-    return gds.util.asNode(nodeId).nome AS nome, score AS pagerank
-    ORDER BY pagerank DESC
-    LIMIT 10000
+    CALL gds.graph.create(
+      'prGraph',
+      'Pessoa',
+      'Coparticipa'
+    )
+
+    CALL gds.pageRank.stream('prGraph')
+    YIELD nodeId, score
+    MATCH (p:Pessoa {id: gds.util.asNode(nodeId).id})
+    SET p.pagerank = score
 
     // Geração das comunidades de pessoas no grafo
 
@@ -392,6 +392,19 @@ def main(args):
     YIELD nodeId, communityId
     MATCH (p:Pessoa {id: gds.util.asNode(nodeId).id})
     SET p.comunidade = communityId
+
+    // Exportando os dados para utilizar no Cytoscape (CSV)
+    // Utilizamos um recorte de arestas com peso maior igual a 3
+
+    MATCH (p1:Pessoa)-[e:Coparticipa]->(p2:Pessoa)
+    WHERE e.num_filmes >= 3
+    RETURN p1.nome AS source, p2.nome AS target, e.num_filmes as weight
+    ORDER BY source
+
+    MATCH (p1:Pessoa)-[e:Coparticipa]->(p2:Pessoa)
+    WHERE e.num_filmes >= 3 
+    RETURN DISTINCT p1.nome AS nome, p1.pagerank AS pagerank, p1.comunidade as comunidade
+    ORDER BY nome
     ~~~
 
     * No Cytoscape, com base no arquivo CSV gerados pelo Neo4j, construímos o grafo e, pelas configurações de visualização, definimos que o *score* do PageRank de cada nó é proporcional ao seu tamanho e a grossura de uma aresta é proporcional ao seu peso.
