@@ -140,26 +140,7 @@ RT_db | [TODO](https://www.rottentomatoes.com/) |  Dataset com avaliações de f
 > Apresente aqui detalhes do processo de construção do dataset e análise. Nesta seção ou na seção de Perguntas podem aparecer destaques de código como indicado a seguir. Note que foi usada uma técnica de highlight de código, que envolve colocar o nome da linguagem na abertura de um trecho com `~~~`, tal como `~~~python`.
 > Os destaques de código devem ser trechos pequenos de poucas linhas, que estejam diretamente ligados a alguma explicação. Não utilize trechos extensos de código. Se algum código funcionar online (tal como um Jupyter Notebook), aqui pode haver links. No caso do Jupyter, preferencialmente para o Binder abrindo diretamente o notebook em questão.
 
-~~~python
-df = pd.read_excel("/content/drive/My Drive/Colab Notebooks/dataset.xlsx");
-sns.set(color_codes=True);
-sns.distplot(df.Hemoglobin);
-plt.show();
-~~~
-
-> Se usar Orange para alguma análise, você pode apresentar uma captura do workflow, como o exemplo a seguir e descrevê-lo:
-![Workflow no Orange](images/orange-zombie-meals-prediction.png)
-
-> Coloque um link para o arquivo do notebook, programas ou workflows que executam as operações que você apresentar.
-
-> Aqui devem ser apresentadas as operações de construção do dataset:
-* extração de dados de fontes não estruturadas como, por exemplo, páginas Web
-* agregação de dados fragmentados obtidos a partir de API
-* integração de dados de múltiplas fontes
-* tratamento de dados
-* transformação de dados para facilitar análise e pesquisa
-
-> Se for notebook, ele estará dentro da pasta `notebook`. Se por alguma razão o código não for executável no Jupyter, coloque na pasta `src` (por exemplo, arquivos do Orange ou Cytoscape). Se as operações envolverem queries executadas atraves de uma interface de um SGBD não executável no Jupyter, como o Cypher, apresente na forma de markdown.
+#### Descrição do Processo de Coleta de Dados
 
 O Movie Catalog Dataset (MCDS), é uma base de dados que agrega informações sobre diversas entidades no contexto da indústria cinematográfica. O coração do nosso dataset é a tabela Filme, cada linha dessa tabela armazena informações sobre um determinado filme. A maioria das outras tabelas, que compõem o MCDS, dependem dessa tabela para serem construídas. Com isso, um dos cuidados iniciais na elaboração do dataset foi, elencar uma fonte de dados de filmes, que fornecesse a maioria das informações que precisamos, como visto no modelo conceitual.
 
@@ -189,19 +170,72 @@ def get_movie_details(movie):
 def get_movies_in_page(page, sort_by:str):
   discover = tmdb.Discover()
   movie_list = discover.discover_movies({
-      'primary_release_date.gte': '1970-01-01',
+      'primary_release_date.gte': '1900-01-01',
       'primary_release_date.lte': '2021-12-31',
-      'sort_by': sort_by,
+      'sort_by': sort_by, # ordenamos por receitas de modo decrescente
       'page': page
   })
   return list(map(get_movie_details, movie_list))
 ~~~
 
-Durante a coleta de dados, notamos que o tempo para a construção de algumas tabelas Pessoa era consideravelmente alto. Assim, dada a nossa expectativa inicial de 1000 filmes, a demora na construção das tabelas seria um grande entrave para o avanço do trabalho. Dessa forma, decidimos paralelizar os scripts de construção das tabelas que consideramos mais problemáticas (Tabelas que necessitam de informações do IMDbPY). Para tanto, utilizamos a biblioteca padrão do Python, Multiprocessing, que oferece a possibilidade de iniciar processos independentes partindo de um processo pai.  Com isso, a nossa paralelização consistiu em dividir o trabalho de aquisição de dados para a construção de uma tabela entre um número de processos equivalente ao número de núcleos lógicos que os nossos computadores possuíam. Por exemplo, em uma máquina com 12 núcleos, são gerados 12 processos que obtêm dados de 12 filmes distintos ao mesmo tempo. 
+O recurso Movie da biblioteca para a API do TMDB, retorna os dados em uma estrutura semelhante a um dicionário Python, em que as chaves dos dicionários são os nomes dos dados disponíveis na API para filmes, caso o TMDB não tenha algum dos dados o valor relacionado a chave desse dado é definido como `None`. Para obter os dados que precisamos, criamos duas listas de mesmo tamanho, uma contendo o nome dos dados que necessitamos e outra com o nome desses dados na nossa tabela. Assim, depois de obter os dados dos filmes, construimos a tabela fazendo match por posição nas listas de chaves e então extraindo o respectivo dado pela chave na estrutura retornada pelo TMDB.
+
+Trecho do código com a definição dos dados de filmes que coletamos do TMDB:
+
+~~~python
+# Informações Necessárias para a Tabela / Colunas da Tabela
+atributos = ["id_TMDB", "id_IMDB", "titulo", "titulo_original", "sinopse", "duracao", 
+             "ano", "situacao", "idioma_original",
+             "orcamento", "receita"]
+
+# Campos com as informações no objeto do filme do TMDB
+atributos_tmdb = ["id", "imdb_id", "title", "original_title", "overview", "runtime",
+                  "release_date", "status", "original_language",
+                  "budget", "revenue"]
+~~~
+
+Após a construção da primeira versão do MCDS notamos algumas inconsistências nas tabelas FranquiaFilme e Sequencia. Nessa tabelas alguns registros apresentavam informações incorretas, por exemplo na tabela FranquiaFilme, constava que os filmes do Capitão América da Marvel, pertencia a franquia de filmes Frozen da Disney.
+
+Uma das formas que utilizamos para determina a franquia de um filme se baseava em uma lista de franquias obtida por web scraping de uma página da Wikipedia. O filme era dito pertencente a franquia se alguma de suas keywords - dado disponível no TMDB - correpondia ao nome de alguma franquia na lista do Wikipedia.
+
+Descobrimos que associações indevidadas de franquias aconteciam, porque alguns filmes possuem keywords com o mesmo nome de algumas franquias na lista, mesmo não pertencendo a essas franquias.
+
+Assim, construimos um novo algoritmo para construção de franquias que, primeiro selecionava uma franquia na lista e então busca uma correspondência com o banco de keywords do TMDB. Então utilizando o recurso de keywords da API, obtemos os filmes que estavam ligados aquela franquia.
+
+Ainda para evitar inconsistências, reduzimos o número de franquias na lista para as que sabíamos que resultaram em correspondências corretas já que seus nomes não eram comuns a assuntos abordados em filmes de modo geral.
+
+Exemplo de código que procura por keywords no TMDB:
+
+~~~python
+def tmdb_search_keyword(api_key:str, query:str, page=1):
+  
+  # Constroi a url para consultar uma keyword na API do TMDB
+  template = 'https://api.themoviedb.org/3/search/keyword?api_key={}&query={}&page={}'
+  query = query.replace(' ', '%20')
+  url = template.format(api_key, query, page)
+  response = requests.get(url).json() # requisição para a API
+
+  # caso a palavra chave não exista no TMDB
+  if not check_result(response):
+      return None
+
+  # Retorna o ID da palavra chave no TMDB
+  return response['results'][0]['id']
+
+# Exemplo de consulta por keyword
+keyword_id = tmdb_search(api_key, 'MonsterVerse')
+~~~
+
+Elaboramos também um novo algoritmo que encontra as sequências, removendo a necessidade de fazer consultas a API do TMDB, pois o nosso próprio dataset possuia as informações necessárias para a construção dessa tabela (Franquias e Filmes), otimizando o tempo necessário para a construção do MCDS.
+
+Durante a coleta de dados, notamos que o tempo para a construção de algumas tabelas era consideravelmente alto. Assim, dada a nossa expectativa inicial de 1000 filmes, a demora na construção das tabelas seria um grande entrave para o avanço do trabalho. Dessa forma, decidimos paralelizar os scripts de construção das tabelas que consideramos mais problemáticas (Tabelas que necessitam de informações do IMDbPY).
+
+Para tanto, utilizamos a biblioteca padrão do Python, Multiprocessing, que oferece a possibilidade de iniciar processos independentes partindo de um processo pai.  Com isso, a nossa paralelização consistiu em dividir o trabalho de aquisição de dados para a construção de uma tabela entre um número de processos equivalente ao número de núcleos lógicos que os nossos computadores possuíam. Por exemplo, em uma máquina com 12 núcleos, são gerados 12 processos que obtêm dados de 12 filmes distintos ao mesmo tempo. 
 
 Para se ter uma ideia a construção da Tabela Filme com 2000 registros,necessitou de aproximadamente 2h30min, para ser totalmente construída na versão dos scripts sem paralelização. Enquanto, que na versão paralelizada esse tempo caiu para aproximadamente 30min, ou seja, conseguimos construir a mesma tabela em um tempo 5 vezes menor.
 
 Trecho de ilustrando a paralelização realizada:
+
 ~~~python
 
 from multiprocessing import Process, cpu_count
@@ -232,6 +266,15 @@ def main(args):
   # Unir todos os pedaços da tabela
   concatenar((table_name, num_pss))
 ~~~
+
+#### Lista/Resumo das operações realizadas
+
+* Agregação de dados obtidos a partir da API do TMDB
+* Extração de dados páginas do IMDb via IMDbPY
+* Transformação de dados vindos do IMDb (Calculo do Número de Oscars)
+* Exclusão de registros com dados essenciais faltantes 
+* Integração de dados entre as diferentes fontes (TMDB, IMDb, Rotten Tomatoes)
+* Paralelização das operações de extração de dados do IMDb 
 
 ## Evolução do Projeto
 
