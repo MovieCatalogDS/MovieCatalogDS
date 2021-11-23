@@ -161,6 +161,78 @@ plt.show();
 
 > Se for notebook, ele estará dentro da pasta `notebook`. Se por alguma razão o código não for executável no Jupyter, coloque na pasta `src` (por exemplo, arquivos do Orange ou Cytoscape). Se as operações envolverem queries executadas atraves de uma interface de um SGBD não executável no Jupyter, como o Cypher, apresente na forma de markdown.
 
+O Movie Catalog Dataset (MCDS), é uma base de dados que agrega informações sobre diversas entidades no contexto da indústria cinematográfica. O coração do nosso dataset é a tabela Filme, cada linha dessa tabela armazena informações sobre um determinado filme. A maioria das outras tabelas, que compõem o MCDS, dependem dessa tabela para serem construídas. Com isso, um dos cuidados iniciais na elaboração do dataset foi, elencar uma fonte de dados de filmes, que fornecesse a maioria das informações que precisamos, como visto no modelo conceitual.
+
+Dentre as fontes que encontramos, o The Movie Database (TMDB) e o Internet Movie Database (IMDb), foram as fontes de dados mais interessantes. Ambas possuem APIs públicas, que facilitam a aquisição de dados.
+
+Optamos por utilizar o TMDB como fonte principal, pois o uso de sua api não apresenta restrições no número de requisições diárias, enquanto a API do IMDb impõem um limite de 100 requisições por dia. Nosso plano inicial era ter uma base de dados com pelo menos 1000 filmes, uma quantidade de dados que acreditamos ser razoável para posteriores análises. Desse modo, o limite de requisições do IMDb tornava inviável o uso de sua API como fonte principal, dado o prazo para a entrega do dataset.
+
+Escolhida a fonte de dados principal, escolhemos Python como a linguagem de programação, para elaborar os scripts que constroem o dataset. A escolha partiu da familiaridade de todos os membros da equipe com a linguagem, além do fato dela possuir bibliotecas e frameworks para tratamento de dados que facilitam a construção do MCDS e que encontramos uma biblioteca de terceiros que torna o uso da API do TMDB mais prático.
+
+Nem todas as informações que necessitamos estão disponíveis no TMDB, por exemplo o número de oscars que um filme ou pessoa ganhou não estão presentes nessa base. Com isso, decidimos utilizar o IMDb como fonte complementar de dados para obter os dados faltantes, pois o TMDB fornece o id dos filmes do IMDb como uma das informações. Dada a restrição da Api do IMDb, optamos por utilizar uma biblioteca de Python - IMDbPY - que obtém dados do IMDb através de Web Scraping. No entanto, a coleta de dados, nessa abordagem, é lenta se comparada ao uso de APIs.
+
+O uso da biblioteca IMDbPY, foi limitado à coleta de informações sobre a classificação indicativa para os filmes e número de Oscars recebidos por um filme ou pessoa.
+
+Para obter as informações dos filmes no TMDB, precisamos primeiro consultar o recurso Discover da API, no qual conseguiamos obter listas de filmes ordenados por alguma caracterista como, popularidade, data de lançamento e receita. Nessa etapa optamos por obter filmes ordenados de maneira decrescente pelas suas receitas. As listas de filmes no Discover são distibuidas em páginas, com cerca de 20 filmes cada, assim para obter informações preliminares sobre N filmes são necessárias aproximadamente N/20 páginas do Discover, ou seja N/20 requisições a API. Em seguida utilizamos o recurso Movie da API para obter todas as informações disponíveis no TMDB sobre os filmes em cada página.
+
+Segue Abaixo o código utilizado para obter as informações sobre filmes.
+
+~~~python
+# Retorna um dicionário com todos os detalhes que a api do TMDB fornece
+def get_movie_details(movie):
+  movie_tools = tmdb.Movie()
+  id = movie['id']
+  return movie_tools.details(id)
+
+# Retorna uma lista com os filmes em uma página do TMDB
+# Cada página costuma ter 20 filmes
+def get_movies_in_page(page, sort_by:str):
+  discover = tmdb.Discover()
+  movie_list = discover.discover_movies({
+      'primary_release_date.gte': '1970-01-01',
+      'primary_release_date.lte': '2021-12-31',
+      'sort_by': sort_by,
+      'page': page
+  })
+  return list(map(get_movie_details, movie_list))
+~~~
+
+Durante a coleta de dados, notamos que o tempo para a construção de algumas tabelas Pessoa era consideravelmente alto. Assim, dada a nossa expectativa inicial de 1000 filmes, a demora na construção das tabelas seria um grande entrave para o avanço do trabalho. Dessa forma, decidimos paralelizar os scripts de construção das tabelas que consideramos mais problemáticas (Tabelas que necessitam de informações do IMDbPY). Para tanto, utilizamos a biblioteca padrão do Python, Multiprocessing, que oferece a possibilidade de iniciar processos independentes partindo de um processo pai.  Com isso, a nossa paralelização consistiu em dividir o trabalho de aquisição de dados para a construção de uma tabela entre um número de processos equivalente ao número de núcleos lógicos que os nossos computadores possuíam. Por exemplo, em uma máquina com 12 núcleos, são gerados 12 processos que obtêm dados de 12 filmes distintos ao mesmo tempo. 
+
+Para se ter uma ideia a construção da Tabela Filme com 2000 registros,necessitou de aproximadamente 2h30min, para ser totalmente construída na versão dos scripts sem paralelização. Enquanto, que na versão paralelizada esse tempo caiu para aproximadamente 30min, ou seja, conseguimos construir a mesma tabela em um tempo 5 vezes menor.
+
+Trecho de ilustrando a paralelização realizada:
+~~~python
+
+from multiprocessing import Process, cpu_count
+
+def main(args):
+  num_pages, order_by, table_name = args
+  num_pages = int(num_pages)
+
+  num_pss = cpu_count() # Numero de Treads do CPU
+
+  # páginas por processador = ceil(num_pages/num_pss)
+  ppp = num_pages//num_pss + 1
+  pr_array = list()
+
+  # Instancia um processo para cada núcleo no computador
+  # Cada processo constroi um pedaço da tabela
+  for i in range(num_pss):
+      t_name = f'data/{table_name}_{i}.csv'
+      s_page = ppp*i + 1
+      pr = Process(target=movie_job, args=(ppp, order_by, t_name, s_page, i))
+      pr_array.append(pr)
+      pr.start()
+      print(f"ID do processo p{i}: {pr.pid}") 
+
+  for i in range(len(pr_array)):
+      pr_array[i].join()
+
+  # Unir todos os pedaços da tabela
+  concatenar((table_name, num_pss))
+~~~
+
 ## Evolução do Projeto
 
 > Relatório de evolução, descrevendo as evoluções na modelagem do projeto, dificuldades enfrentadas, mudanças de rumo, melhorias e lições aprendidas. Referências aos diagramas, modelos e recortes de mudanças são bem-vindos.
