@@ -131,9 +131,9 @@ StreamingFilme | [StreamingFilme](./data/processed/StreamingFilme.csv) | Cada li
 
 título da base | link | breve descrição
 ----- | ----- | -----
-TMDB | [TMDB](https://www.themoviedb.org/?language=pt-BR) |  Base de dados gratuita e de código aberto sobre filmes e séries de TV
-IMDb | [IMDb](https://www.imdb.com) |  Base de dados online de informação sobre cinema, TV, música e games
-RT_db | [TODO](https://www.rottentomatoes.com/) |  Dataset com avaliações de filmes obtidas do Rotten Tomatoes
+The Movie Database (TMDB) | [TMDB](https://www.themoviedb.org/?language=pt-BR) |  Base de dados gratuita e de código aberto sobre filmes e séries de TV
+Internet Movie Database (IMDb) | [IMDb](https://www.imdb.com) |  Base de dados online de informação sobre cinema, TV, música e games
+Rotten Tomatoes movies and critic reviews dataset | [Kaggle](https://www.kaggle.com/stefanoleone992/rotten-tomatoes-movies-and-critic-reviews-dataset/activity) |  Dataset com avaliações de filmes obtidas do Rotten Tomatoes
 
 ## Detalhamento do Projeto
 
@@ -332,7 +332,7 @@ def main(args):
 
 #### Pergunta/Análise 2
 
-* Como os gêneros dos filmes se relacionam em uma determinada década?
+* Como os gêneros que classificam os filmes se relacionam em uma determinada década?
   
   * Para responder à esta pergunta, foi necessário analisarmos os gêneros que os classificam os filmes contidos no *dataset*, restringindo os filmes em questão pela década em que foram lançados. Ademais, utilizamos o Neo4j e também o Cytoscape a fim de gerarmos as respostas desejadas.
   
@@ -425,7 +425,7 @@ def main(args):
 
 #### Pergunta/Análise 1
 
-* Sabendo que uma pessoa X trabalhou com uma pessoa Y no filme A e com uma pessoa Z no fime B, qual é a probabilidade das pessoas Y e Z trabalharem juntas em um filme C?
+* Sabendo que uma pessoa X trabalhou com uma pessoa Y no filme A e com uma pessoa Z no filme B, qual é a probabilidade das pessoas Y e Z trabalharem juntas em um filme C?
   
   * Com base em nosso *dataset*, pode ser gerado um grafo homogêneo que relaciona pessoas (atores, diretores e roteiristas) através filmes em que elas trabalharam juntas. Realizando um análise de predição de link sobre esse grafo, é possível calcular a probabilidade de duas pessoas colaborarem em um novo filme. Sendo que tais pessoas trabalharam com uma pessoa em comum, mas nunca colaboraram juntas. A resposta dessa pergunta pode ser relevante para facilitar o processo de *casting* - seleção de atores, roteiristas, etc. - de um filme em pré-produção, por exemplo.
 
@@ -442,7 +442,7 @@ def main(args):
   
   * Com base em nosso *dataset*, pode ser gerado um grafo homogêneo que relaciona pessoas (atores, diretores e roteiristas) através do gênero que classifica os filmes em que elas trabalharam juntas. Para delimitar a década de interesse, basta que o ano de lançamento de cada um dos filmes seja verificado na montagem do grafo. Fazendo recortes desse grafo que admitem somente pessoas que estão conectadas por um mesmo gênero, podemos aplicar uma análise de centralidade por PageRank para determinar as pessoas mais relevantes do gênero em questão. A resposta dessa pergunta pode ser relevante para o estudo da história da indústria cinematográfica, por exemplo.
 
-> Coloque um link para o arquivo do notebook que executa o conjunto de queries. Ele estará dentro da pasta `notebook`. Se por alguma razão o código não for executável no Jupyter, coloque na pasta `src`. Se as queries forem executadas atraves de uma interface de um SGBD não executável no Jupyter, como o Cypher, apresente na forma de markdown.
 
-* Conjunto de queries SQL: [](./notebooks/.ipynb)
-* Conjunto de queries Cypher: [](./src/.md)
+* Conjunto de queries SQL: [QueriesSQL.ipynb](./notebooks/QueriesSQL.ipynb)
+
+* Conjunto de queries Cypher: [QueriesCypher.md](./src/QueriesCypher.md)
