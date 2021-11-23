@@ -170,10 +170,39 @@ plt.show();
 > ![Comunidade no Cytoscape](images/cytoscape-comunidade.png)
 
 #### Pergunta/Análise 1
-> * Pergunta 1
->   
->   * Explicação sucinta da análise que será feita e conjunto de queries que
->     responde à pergunta.
+
+* Os filmes que mais fizeram sucesso com o público também são aqueles que mais fizeram sucesso com a crítica?
+  
+  * De modo a responder à esta pergunta, foi necessário analisarmos as receitas e as avaliações de todos os filmes obtidos. Conforme ilustrado pelo conjunto de queries SQL a seguir, calculamos a nota média de cada um dos filmes, tomando filmes julgados por todos os avaliadores considerados (TMDB, IMDb e Rotten Tomatoes), e depois geramos duas tabelas. A primeira tabela ordenada decrescentemente por receita e a segunda tabela ordenada decrescentemente por nota média. Os resultados mostraram que os filmes que mais fizeram sucesso com esses grupos, mais especificamente os 10 primeiros, são distintos entre si.
+
+  ~~~SQL
+  /* Relação entre sucesso com o público (receita)
+   e sucesso com a crítica (nota média) dos filmes */
+
+  DROP TABLE IF EXISTS FilmeReceitaNota;
+  DROP TABLE IF EXISTS FilmeAvaliacao;
+
+  CREATE VIEW FilmeAvaliacao AS
+      SELECT A.id_filme, SUM(A.nota) nota_total, COUNT(A.id_filme) qtd_avaliacoes
+          FROM Avaliacao A
+          GROUP BY A.id_filme;
+
+  CREATE VIEW FilmeReceitaNota AS
+      SELECT A.id_filme, F.titulo, F.ano, F.receita, (A.nota_total / A.qtd_avaliacoes) nota_media
+          FROM Filme F, FilmeAvaliacao A
+          WHERE A.id_filme = F.id_TMDB
+            AND qtd_avaliacoes > 2;
+
+  -- Ordenação decrescente por receita
+  SELECT titulo, receita, nota_media 
+      FROM FilmeReceitaNota
+      ORDER BY receita DESC LIMIT 10;
+
+  -- Ordenação decrescente por nota média
+  SELECT titulo, receita, nota_media
+      FROM FilmeReceitaNota
+      ORDER BY nota_media DESC LIMIT 10;
+  ~~~
 
 #### Pergunta/Análise 2
 > * Pergunta 2
@@ -190,18 +219,24 @@ plt.show();
 ### Perguntas/Análise Propostas mas Não Implementadas
 
 #### Pergunta/Análise 1
-> * Pergunta 1
->   
->   * Explicação em linhas gerais de como a base pode ser usada para responder esta pergunta e a sua relevância.
+
+* Sabendo que uma pessoa X trabalhou com uma pessoa Y no filme A e com uma pessoa Z no fime B, qual é a probabilidade das pessoas Y e Z trabalharem juntas em um filme C?
+  
+  * Com base em nosso dataset, pode ser gerado um grafo homogêneo que relaciona pessoas (atores, diretores e roteiristas) através filmes em que elas trabalharam juntas. Realizando um análise de predição de link sobre esse grafo, é possível calcular a probabilidade de duas pessoas colaborarem em um novo filme. Sendo que tais pessoas trabalharam com uma pessoa em comum, mas nunca colaboraram juntas. A resposta dessa pergunta pode ser relevante para facilitar o processo de casting - seleção de atores, roteiristas, etc. - de um filme em pré-produção, por exemplo.
+
 
 #### Pergunta/Análise 2
+
+* Quais são as características de um filme que faz sucesso com o público?
+
 > * Pergunta 2
 >   
 >   * Explicação em linhas gerais de como a base pode ser usada para responder esta pergunta e a sua relevância.
 
 #### Pergunta/Análise 3
-> * Pergunta 3
->   
->   * Explicação em linhas gerais de como a base pode ser usada para responder esta pergunta e a sua relevância.
+
+* Quem são as pessoas mais relevantes em cada gênero em uma determinada década?
+  
+  * Com base em nosso dataset, pode ser gerado um grafo homogêneo que relaciona pessoas (atores, diretores e roteiristas) através do gênero que classifica os filmes em que elas trabalharam juntas. Para delimitar a década de interesse, basta que o ano de lançamento de cada um dos filmes seja verificado na montagem do grafo. Fazendo recortes desse grafo que admitem somente pessoas que estão conectadas por um mesmo gênero, podemos aplicar uma análise de centralidade por PageRank para determinar as pessoas mais relevantes do gênero em questão. A resposta dessa pergunta pode ser relevante para o estudo da história da indústria cinematográfica, por exemplo.
 
 > Coloque um link para o arquivo do notebook que executa o conjunto de queries. Ele estará dentro da pasta `notebook`. Se por alguma razão o código não for executável no Jupyter, coloque na pasta `src`. Se as queries forem executadas atraves de uma interface de um SGBD não executável no Jupyter, como o Cypher, apresente na forma de markdown.
