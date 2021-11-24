@@ -133,7 +133,7 @@ título da base | link | breve descrição
 ----- | ----- | -----
 TMDB | [TMDB](https://www.themoviedb.org/?language=pt-BR) |  Base de dados gratuita e de código aberto sobre filmes e séries de TV
 IMDb | [IMDb](https://www.imdb.com) |  Base de dados online de informação sobre cinema, TV, música e games
-RT_db | [TODO](https://www.rottentomatoes.com/) |  Dataset com avaliações de filmes obtidas do Rotten Tomatoes
+RT_db | [Kaggle](https://www.kaggle.com/stefanoleone992/rotten-tomatoes-movies-and-critic-reviews-dataset) |  Kaggle Dataset com avaliações de filmes obtidas do Rotten Tomatoes
 
 ## Detalhamento do Projeto
 
@@ -196,11 +196,11 @@ atributos_tmdb = ["id", "imdb_id", "title", "original_title", "overview", "runti
 
 Após a construção da primeira versão do MCDS notamos algumas inconsistências nas tabelas FranquiaFilme e Sequencia. Nessa tabelas alguns registros apresentavam informações incorretas, por exemplo na tabela FranquiaFilme, constava que os filmes do Capitão América da Marvel, pertencia a franquia de filmes Frozen da Disney.
 
-Uma das formas que utilizamos para determina a franquia de um filme se baseava em uma lista de franquias obtida por web scraping de uma página da Wikipedia. O filme era dito pertencente a franquia se alguma de suas keywords - dado disponível no TMDB - correpondia ao nome de alguma franquia na lista do Wikipedia.
+Uma das formas que utilizamos para determinar a franquia de um filme se baseava em uma lista de franquias obtida por web scraping de uma página da Wikipedia. O filme era dito pertencente a franquia se alguma de suas keywords - dado disponível no TMDB - correpondia ao nome de alguma franquia na lista do Wikipedia.
 
-Descobrimos que associações indevidadas de franquias aconteciam, porque alguns filmes possuem keywords com o mesmo nome de algumas franquias na lista, mesmo não pertencendo a essas franquias.
+Descobrimos que associações indevidadas de franquias aconteciam porque alguns filmes possuem keywords com o mesmo nome de algumas franquias na lista, mesmo não pertencendo a essas franquias.
 
-Assim, construimos um novo algoritmo para construção de franquias que, primeiro selecionava uma franquia na lista e então busca uma correspondência com o banco de keywords do TMDB. Então utilizando o recurso de keywords da API, obtemos os filmes que estavam ligados aquela franquia.
+Assim, construimos um novo algoritmo para construção de franquias que, primeiro selecionava uma franquia na lista e então buscava uma correspondência com o banco de keywords do TMDB. Então utilizando o recurso de keywords da API, obtivemos os filmes que estavam ligados com aquela franquia.
 
 Ainda para evitar inconsistências, reduzimos o número de franquias na lista para as que sabíamos que resultaram em correspondências corretas já que seus nomes não eram comuns a assuntos abordados em filmes de modo geral.
 
@@ -228,11 +228,27 @@ keyword_id = tmdb_search(api_key, 'MonsterVerse')
 
 Elaboramos também um novo algoritmo que encontra as sequências, removendo a necessidade de fazer consultas a API do TMDB, pois o nosso próprio dataset possuia as informações necessárias para a construção dessa tabela (Franquias e Filmes), otimizando o tempo necessário para a construção do MCDS.
 
+Consequentemente, o grupo optou por construir os algoritmos subsequentes seguindo o padrão de reutilização das tabelas ja geradas, e assim, os algoritmos responsaveis pelas tabelas Avaliação, Pessoas, PessoaFilme e StreamingFilme compartilharam do seguinte trecho de código:
+
+~~~python
+def load_csv(file_name="", index_col="id_TMDB"):
+    ''' Código responsável por carregar tabelas ja geradas para reutilização.
+        Lê uma tabela gerada previamente e retorna um dataframe para manipulação '''
+    try:
+        file_name += '.csv'
+        return pd.read_csv(load_path + file_name, index_col=index_col)
+
+    except FileNotFoundError:
+        print("Arquivo [" + file_name + "] nao encontrado!")
+~~~
+
 Durante a coleta de dados, notamos que o tempo para a construção de algumas tabelas era consideravelmente alto. Assim, dada a nossa expectativa inicial de 1000 filmes, a demora na construção das tabelas seria um grande entrave para o avanço do trabalho. Dessa forma, decidimos paralelizar os scripts de construção das tabelas que consideramos mais problemáticas (Tabelas que necessitam de informações do IMDbPY).
 
 Para tanto, utilizamos a biblioteca padrão do Python, Multiprocessing, que oferece a possibilidade de iniciar processos independentes partindo de um processo pai.  Com isso, a nossa paralelização consistiu em dividir o trabalho de aquisição de dados para a construção de uma tabela entre um número de processos equivalente ao número de núcleos lógicos que os nossos computadores possuíam. Por exemplo, em uma máquina com 12 núcleos, são gerados 12 processos que obtêm dados de 12 filmes distintos ao mesmo tempo. 
 
-Para se ter uma ideia a construção da Tabela Filme com 2000 registros,necessitou de aproximadamente 2h30min, para ser totalmente construída na versão dos scripts sem paralelização. Enquanto, que na versão paralelizada esse tempo caiu para aproximadamente 30min, ou seja, conseguimos construir a mesma tabela em um tempo 5 vezes menor.
+Para se ter uma ideia, a construção da Tabela Filme com 2000 registros, necessitou de aproximadamente 2h30min para ser totalmente construída na versão dos scripts sem paralelização. Enquanto, que na versão paralelizada esse tempo caiu para aproximadamente 30min, ou seja, conseguimos construir a mesma tabela em um tempo 5 vezes menor.
+
+Tal melhora no desempenho tambem ocorreu na mesma proporção para outros algoritmos que implementaram a paralelização, como na criação das tabelas Avaliação e Pessoas.
 
 Trecho de ilustrando a paralelização realizada:
 
@@ -281,6 +297,10 @@ def main(args):
 > Relatório de evolução, descrevendo as evoluções na modelagem do projeto, dificuldades enfrentadas, mudanças de rumo, melhorias e lições aprendidas. Referências aos diagramas, modelos e recortes de mudanças são bem-vindos.
 > Podem ser apresentados destaques na evolução dos modelos conceitual e lógico. O modelo inicial e intermediários (quando relevantes) e explicação de refinamentos, mudanças ou evolução do projeto que fundamentaram as decisões.
 > Relatar o processo para se alcançar os resultados é tão importante quanto os resultados.
+
+Ao longo do desenvolvimento do projeto foi decidido incluir várias fontes de dados com intuito de dar mais credibilidade a consulta de notas dos filmes, porém devido à complexidade, inicialmente o grupo optou por importar notas apenas das APIs do TMDB e IMDb com o propósito de disponibilizar um protótipo funcional para que assim se pudesse iniciar o desenvolvimento das querys SQL o quanto antes. Paralelamente foi analisada a possiblidade da inclusão de novas fontes e chegamos a conclusão, devido a grande influência, de que seria mais agregador ao projeto incluirmos notas do Rotten Tomatoes. 
+
+Incialmente optamos pela realização de web-scrapping em suas paginas, porém devido a complexidade de suas pagina dinâmicas, APIs descontinuadas e disponibilidade da equipe, optamos por utilizar um dataset suficientemente completo e recente do Kaggle para extrairmos os demais dados que precisávamos. Observou-se uma necessidade de padronização nas notas obtidas e, assim, o grupo optou normalizar todas as notas em uma escala de 0 a 10.
 
 ## Perguntas de Pesquisa/Análise Combinadas e Respectivas Análises
 
