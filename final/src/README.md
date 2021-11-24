@@ -25,11 +25,15 @@ python3 -m venv nome_do_venv
 source nome_do_venv/bin/activate
 ~~~
 
+## Dependências
+
 Para que os scripts funcionem corretamente é necessário instalar as dependencias do projeto definidas no arquivo `requirements.txt`. Para tal rode o seguinte comando no terminal:
 
 ~~~bash
 pip install -r requirements.txt
 ~~~
+
+## Execução do Script
 
 Após instalar as dependencias do projeto, no ambiente virtual, ou no seu sistema, basta executar o script bash `build_MCDS.sh` ou o arquivo `main.py`, para iniciar a construção do dataset como nos exemplos abaixo.
 
