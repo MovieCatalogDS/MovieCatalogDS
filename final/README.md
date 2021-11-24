@@ -1,50 +1,3 @@
-# Modelo de Apresentação da Final
-
-# Estrutura de Arquivos e Pastas
-
-A estrutura aqui apresentada é uma simplificação daquela proposta pelo [Cookiecutter Data Science](https://drivendata.github.io/cookiecutter-data-science/). Também será aceito que o projeto adote a estrutura completa do Cookiecutter Data Science e isso será considerado um diferencial. A estrutura geral é a seguinte e será detalhada a seguir:
-
-~~~
-├── README.md  <- arquivo apresentando a proposta
-│
-├── data
-│   ├── external       <- dados de terceiros em formato usado para entrada na transformação
-│   ├── interim        <- dados intermediários, e.g., resultado de transformação
-│   ├── processed      <- dados finais usados para a publicação
-│   └── raw            <- dados originais sem modificações
-│
-├── notebooks          <- Jupyter notebooks ou equivalentes
-│
-├── slides             <- arquivo de slides em formato PDF
-│
-├── src                <- fonte em linguagem de programação ou sistema (e.g., Orange, Cytoscape)
-│   └── README.md      <- instruções básicas de instalação/execução
-│
-└── assets             <- mídias usadas no projeto
-~~~
-
-Na raiz deve haver um arquivo de nome `README.md` contendo a apresentação do projeto, como detalhado na seção seguinte.
-
-## `data`
-
-Arquivos de dados usados no projeto, quando isso ocorrer.
-
-## `notebooks`
-
-Testes ou prototipos relacionados ao projeto que tenham sido executados no Jupyter.
-
-## `src`
-
-Projeto na linguagem escolhida caso não seja usado o notebook, incluindo todos os arquivos de dados e bibliotecas necessários para a sua execução. Só coloque código Pyhton ou Java aqui se ele não rodar dentro do notebook.
-
- Acrescente na raiz um arquivo `README.md` com as instruções básicas de instalação e execução.
-
-## `assets`
-
-Qualquer mídia usada no seu projeto: vídeo, imagens, animações, slides etc. Coloque os arquivos aqui (mesmo que você mantenha uma cópia no diretório do código).
-
-# Modelo para Apresentação da Entrega Prévia do Projeto
-
 # Projeto Movie Catalog Dataset
 
 # Equipe MovieCatalogDS - MCDS
@@ -114,18 +67,18 @@ Modelo Lógico de Grafos - Grafo de Propriedades
 
 título do arquivo/base | link | breve descrição
 ----- | ----- | -----
-Filme | [Filme](./data/processed/Filme.csv) | Tabela com dados de filmes.
-Sequencia | [Sequencia](./data/processed/Sequencia.csv) | Relação de sequencia entre filmes.
-Franquia | [Franquia](./data/processed/Franquia.csv) | Lista das franquias que contêm os filmes na tabela Filme.
-FranquiaFilme | [FranquiaFilme](./data/processed/FranquiaFilme.csv) | Relaciona franquias com seus respectivos filmes.
-Genero | [Genero](./data/processed/Genero.csv) | Lista de gêneros obtidos no TMDB.
-GeneroFilme | [GeneroFilme](./data/processed/GeneroFilme.csv) | Cada linha na tabela relaciona um filme com um gênero que ele possui.
-Pessoa | [Pessoa](./data/processed/Pessoa.csv) | Tabela com dados sobre Pessoas que participam da produção de filmes da tabela Filme.
-PessoaFilme | [PessoaFilme](./data/processed/PessoaFilme.csv) | Relaciona pessoas e filmes indicando o tipo de participação da pessoa: Ator, Diretor ou Roterista.
-Avaliador | [Avaliador](./data/processed/Avaliador.csv) | Lista com alguns portais de avaliação de filmes.
-Avaliacao | [Avaliacao](./data/processed/Avaliacao.csv) | Armazena as avaliações de filmes na tabela Filmes obtida dos avaliadores na tabela Avaliador.
-Streaming | [Streaming](./data/processed/Streaming.csv) | Lista de plataformas de streaming de filmes obtidas no TMDB.
-StreamingFilme | [StreamingFilme](./data/processed/StreamingFilme.csv) | Cada linha da tabela relaciona um filme com uma plataforma na qual ele pode ser encontrado.
+Filme | [Filme.csv](./data/processed/Filme.csv) | Tabela com dados de filmes.
+Sequencia | [Sequencia.csv](./data/processed/Sequencia.csv) | Relação de sequencia entre filmes.
+Franquia | [Franquia.csv](./data/processed/Franquia.csv) | Lista das franquias que contêm os filmes na tabela Filme.
+FranquiaFilme | [FranquiaFilme.csv](./data/processed/FranquiaFilme.csv) | Relaciona franquias com seus respectivos filmes.
+Genero | [Genero.csv](./data/processed/Genero.csv) | Lista de gêneros obtidos no TMDB.
+GeneroFilme | [GeneroFilme.csv](./data/processed/GeneroFilme.csv) | Cada linha na tabela relaciona um filme com um gênero que ele possui.
+Pessoa | [Pessoa.csv](./data/processed/Pessoa.csv) | Tabela com dados sobre Pessoas que participam da produção de filmes da tabela Filme.
+PessoaFilme | [PessoaFilme.csv](./data/processed/PessoaFilme.csv) | Relaciona pessoas e filmes indicando o tipo de participação da pessoa: Ator, Diretor ou Roterista.
+Avaliador | [Avaliador.csv](./data/processed/Avaliador.csv) | Lista com alguns portais de avaliação de filmes.
+Avaliacao | [Avaliacao.csv](./data/processed/Avaliacao.csv) | Armazena as avaliações de filmes na tabela Filmes obtida dos avaliadores na tabela Avaliador.
+Streaming | [Streaming.csv](./data/processed/Streaming.csv) | Lista de plataformas de streaming de filmes obtidas no TMDB.
+StreamingFilme | [StreamingFilme.csv](./data/processed/StreamingFilme.csv) | Cada linha da tabela relaciona um filme com uma plataforma na qual ele pode ser encontrado.
 
 ## Bases de Dados
 
@@ -278,13 +231,25 @@ def main(args):
 
 ## Evolução do Projeto
 
+É possível descrever a evolução do projeto através dos seguintes tópicos:
+
+* Mudança de foco: uma de nossas motivações primárias ao escolhermos o tema de filmes foi a de analisar franquias e universos cinematográficos. Todavia, conforme avançamos com o projeto, percebemos que os pontos mais interessantes para análise estavam nas relações entre os filmes e as pessoas que trabalharam neles, assim como nas relações entre os filmes e os gêneros que os classificam.
+
+* Decisão de utilizar APIs: levando em consideração que a agregação de datasets sobre filmes disponíveis pela internet poderia requerer massivos tratamentos e transformações de dados, ponderamos que talvez fosse eficiente obter informações por requisições a APIs das fontes de dados escolhidas (TMDB e IMDb). Essa decisão nos ajudou a dar continuidade ao projeto, visto que cada nova versão do dataset era uma expansão da versão anterior.
+
+* Expansão da quantidade de dados do dataset: para concluirmos a versão inicial do dataset, coletamos os dados relativos a 100 filmes e, para a versão final, projetávamos coletar os dados relacionados a cerca de 1000 filmes. No entanto, conforme o projeto avançou, decidimos aumentar ainda mais a quantidade de filmes que teriam 
+
+* Necessidade de otimizar os scripts de extração de dados: embora a decisão de usar APIs tenha trazido consequências boas, quando fomos aumentar a quantidade de dados no dataset, nos deparamos com um grande problema: a grande demora para a coleta dos dados. Para resolvê-lo, decidimos por paralelizar trechos -chave dos scripts que faziam a coleta. Como resultado disso, nos casos mais extremos (bases de dados Pessoa e Avaliador), houve uma diminuição de mais de 90% de tempo.
+
+* Adição de dados do Rotten Tomatoes: com intuito de dar mais credibilidade às avaliações dos filmes presentes no dataset, decidimos considerar o RT como um avaliador presente no ds, além do TMDB e IMDb. Inicialmente, a ideia era de realizarmos web-scrapping em seu site, mas devido à complexidade de suas páginas dinâmicas, APIs descontinuadas e pouca tempo disponível para trabalharmos, optamos por utilizar um dataset disponível no Kaggle que contava com dados de avaliações do RT sobre filmes lançados até outubro de 2020. Para insere
+
 > Relatório de evolução, descrevendo as evoluções na modelagem do projeto, dificuldades enfrentadas, mudanças de rumo, melhorias e lições aprendidas. Referências aos diagramas, modelos e recortes de mudanças são bem-vindos.
 > Podem ser apresentados destaques na evolução dos modelos conceitual e lógico. O modelo inicial e intermediários (quando relevantes) e explicação de refinamentos, mudanças ou evolução do projeto que fundamentaram as decisões.
 > Relatar o processo para se alcançar os resultados é tão importante quanto os resultados.
 
 ## Perguntas de Pesquisa/Análise Combinadas e Respectivas Análises
 
-### Perguntas/Análise com Resposta Implementada
+### Perguntas/Análises com Resposta Implementada
 
 #### Pergunta/Análise 1
 
@@ -334,7 +299,7 @@ def main(args):
 
 * Como os gêneros que classificam os filmes se relacionam em uma determinada década?
   
-  * Para responder à esta pergunta, foi necessário analisarmos os gêneros que os classificam os filmes contidos no *dataset*, restringindo os filmes em questão pela década em que foram lançados. Ademais, utilizamos o Neo4j e também o Cytoscape a fim de gerarmos as respostas desejadas.
+  * Para responder à esta pergunta, foi necessário analisarmos os gêneros que os classificam os filmes contidos no dataset, restringindo os filmes em questão pela década em que foram lançados. Ademais, utilizamos o Neo4j e também o Cytoscape a fim de gerarmos as respostas desejadas.
   
     * No Neo4j, a partir das bases **Filme** e **GeneroFilme**, geramos um grafo homogêneo que relaciona os gêneros através dos filmes classificados por eles. Partindo então desse grafo, produzimos grafos homogêneos em que os gêneros estavam conectados apenas por filmes lançados em uma década específica. De modo que o peso das arestas entre dois gêneros adjacentes representa a quantidade de filmes lançados que pode ser classificado por ambos. Produzidos os grafos, geramos tabelas no formato CSV que representam as conexões entre os gêneros e também seus pesos.
 
@@ -353,7 +318,7 @@ def main(args):
     RETURN g1.nome AS source, g2.nome AS target, e.num_filmes as weight
     ~~~
   
-    * No Cytoscape, com base nos arquivos CSV gerados pelo Neo4j, construímos os grafos e aplicamos sobre eles análises de centralidade por grau e centralidade por *betweenness*. Sendo que, pelas configurações de visualização, definimos que a centralidade por grau é proporcional ao tamanho dos nós, a centralidade por *betweenness* é mostrada pela cor dos nós e a grossura de uma aresta é proporcional ao seu peso.
+    * No Cytoscape, com base nos arquivos CSV gerados pelo Neo4j, construímos os grafos e aplicamos sobre eles análises de centralidade por grau e centralidade por betweenness. Sendo que, pelas configurações de visualização, definimos que a centralidade por grau é proporcional ao tamanho dos nós, a centralidade por betweenness é mostrada pela cor dos nós e a grossura de uma aresta é proporcional ao seu peso.
   
   * Seguem abaixo as figuras que ilustram os grafos homogêneos que representam as relações entre os gêneros dos filmes lançados nas décadas de 1990 e 2000, respectivamente.
 
@@ -417,7 +382,7 @@ def main(args):
     ORDER BY nome
     ~~~
 
-    * No Cytoscape, com base no arquivo CSV gerados pelo Neo4j, construímos o grafo e, pelas configurações de visualização, definimos que o *score* do PageRank de cada nó é proporcional ao seu tamanho e a grossura de uma aresta é proporcional ao seu peso.
+    * No Cytoscape, com base no arquivo CSV gerados pelo Neo4j, construímos o grafo e, pelas configurações de visualização, definimos que o score do PageRank de cada nó é proporcional ao seu tamanho e a grossura de uma aresta é proporcional ao seu peso.
 
   * A figura a seguir ilustra o grafo que relaciona comunidades de pessoas por completo.
 
@@ -429,29 +394,31 @@ def main(args):
 
     * Na comunidade em questão, podemos observar que Stan Lee é a pessoa mais relevante, estando conectado a outras dezenas de pessoas de colaboraram juntas nos filmes deste universo.
 
-**\* Observação:** é válido ressaltar que, devido à enorme quantidade de dados relativos a pessoas na versão final de nosso *dataset*, foi necessário considerarmos as tabelas da versão inicial - 100 Filmes - para que fosse possível realizar os processamentos requeridos para a obtenção das respostas apresentadas para esta figura.
+**\* Observação:** é válido ressaltar que, devido à enorme quantidade de dados relativos a pessoas na versão final do dataset, foi necessário considerarmos as tabelas da versão inicial - 100 Filmes - para que fosse possível realizar os processamentos requeridos para a obtenção das respostas apresentadas para esta pergunta/análise.
 
-### Perguntas/Análise Propostas mas Não Implementadas
+### Perguntas/Análises Propostas mas Não Implementadas
 
 #### Pergunta/Análise 1
 
 * Sabendo que uma pessoa X trabalhou com uma pessoa Y no filme A e com uma pessoa Z no filme B, qual é a probabilidade das pessoas Y e Z trabalharem juntas em um filme C?
   
-  * Com base em nosso *dataset*, pode ser gerado um grafo homogêneo que relaciona pessoas (atores, diretores e roteiristas) através filmes em que elas trabalharam juntas. Realizando um análise de predição de link sobre esse grafo, é possível calcular a probabilidade de duas pessoas colaborarem em um novo filme. Sendo que tais pessoas trabalharam com uma pessoa em comum, mas nunca colaboraram juntas. A resposta dessa pergunta pode ser relevante para facilitar o processo de *casting* - seleção de atores, roteiristas, etc. - de um filme em pré-produção, por exemplo.
+  * Com base em nosso dataset, pode ser gerado um grafo homogêneo que relaciona pessoas (atores, diretores e roteiristas) através filmes em que elas trabalharam juntas. Realizando um análise de predição de link sobre esse grafo, é possível calcular a probabilidade de duas pessoas colaborarem em um novo filme. Sendo que tais pessoas trabalharam com uma pessoa em comum, mas nunca colaboraram juntas. A resposta dessa pergunta pode ser relevante para facilitar o processo de casting - seleção de atores, roteiristas, etc. - de um filme em pré-produção, por exemplo.
 
 
 #### Pergunta/Análise 2
 
 * Quais são as características de um filme que faz sucesso com o público?
 
-  * A partir de nosso *dataset*, utilizando *queries* SQL, é possível elencar os filmes com as maiores receitas, isto é, que fizeram mais sucesso com público nos cinemas. Definindo um recorte temporal que tem início em 2018, por exemplo, pode-se verificar quais foram os filmes que mais lucraram nos últimos anos, sendo possível verificar quais são seus gêneros, seu orçamento, as pessoas envolvidas em sua produção, dentre outros aspectos. Em posse dessas informações, um estúdio da indústria cinematográfica pode ser capaz de desenhar o "mapa do tesouro" do sucesso com o público e identificar quais são os requisitos para aumentar seu lucro e reconhecimento, por exemplo.
+  * A partir de nosso dataset, utilizando queries SQL, é possível elencar os filmes com as maiores receitas, isto é, que fizeram mais sucesso com público nos cinemas. Definindo um recorte temporal que tem início em 2018, por exemplo, pode-se verificar quais foram os filmes que mais lucraram nos últimos anos, sendo possível verificar quais são seus gêneros, seu orçamento, as pessoas envolvidas em sua produção, dentre outros aspectos. Em posse dessas informações, um estúdio da indústria cinematográfica pode ser capaz de desenhar o "mapa do tesouro" do sucesso com o público e identificar quais são os requisitos para aumentar seu lucro e reconhecimento, por exemplo.
 
 #### Pergunta/Análise 3
 
 * Quem são as pessoas mais relevantes em cada gênero em uma determinada década?
   
-  * Com base em nosso *dataset*, pode ser gerado um grafo homogêneo que relaciona pessoas (atores, diretores e roteiristas) através do gênero que classifica os filmes em que elas trabalharam juntas. Para delimitar a década de interesse, basta que o ano de lançamento de cada um dos filmes seja verificado na montagem do grafo. Fazendo recortes desse grafo que admitem somente pessoas que estão conectadas por um mesmo gênero, podemos aplicar uma análise de centralidade por PageRank para determinar as pessoas mais relevantes do gênero em questão. A resposta dessa pergunta pode ser relevante para o estudo da história da indústria cinematográfica, por exemplo.
+  * Com base em nosso dataset, pode ser gerado um grafo homogêneo que relaciona pessoas (atores, diretores e roteiristas) através do gênero que classifica os filmes em que elas trabalharam juntas. Para delimitar a década de interesse, basta que o ano de lançamento de cada um dos filmes seja verificado na montagem do grafo. Fazendo recortes desse grafo que admitem somente pessoas que estão conectadas por um mesmo gênero, podemos aplicar uma análise de centralidade por PageRank para determinar as pessoas mais relevantes do gênero em questão. A resposta dessa pergunta pode ser relevante para o estudo da história da indústria cinematográfica, por exemplo.
 
+
+Além das perguntas/análises com respostas implementadas apresentadas acima, submetemos o dataset a outras perguntas/análises no formato de queries que podem ser encontradas nos seguintes arquivos:
 
 * Conjunto de queries SQL: [QueriesSQL.ipynb](./notebooks/QueriesSQL.ipynb)
 
