@@ -67,18 +67,18 @@ Modelo Lógico de Grafos - Grafo de Propriedades
 
 título do arquivo/base | link | breve descrição
 ----- | ----- | -----
-Filme | [Filme.csv](./data/processed/Filme.csv) | Tabela com dados de filmes.
-Sequencia | [Sequencia.csv](./data/processed/Sequencia.csv) | Relação de sequencia entre filmes.
-Franquia | [Franquia.csv](./data/processed/Franquia.csv) | Lista das franquias que contêm os filmes na tabela Filme.
-FranquiaFilme | [FranquiaFilme.csv](./data/processed/FranquiaFilme.csv) | Relaciona franquias com seus respectivos filmes.
-Genero | [Genero.csv](./data/processed/Genero.csv) | Lista de gêneros obtidos no TMDB.
-GeneroFilme | [GeneroFilme.csv](./data/processed/GeneroFilme.csv) | Cada linha na tabela relaciona um filme com um gênero que ele possui.
-Pessoa | [Pessoa.csv](./data/processed/Pessoa.csv) | Tabela com dados sobre Pessoas que participam da produção de filmes da tabela Filme.
-PessoaFilme | [PessoaFilme.csv](./data/processed/PessoaFilme.csv) | Relaciona pessoas e filmes indicando o tipo de participação da pessoa: Ator, Diretor ou Roterista.
-Avaliador | [Avaliador.csv](./data/processed/Avaliador.csv) | Lista com alguns portais de avaliação de filmes.
-Avaliacao | [Avaliacao.csv](./data/processed/Avaliacao.csv) | Armazena as avaliações de filmes na tabela Filmes obtida dos avaliadores na tabela Avaliador.
-Streaming | [Streaming.csv](./data/processed/Streaming.csv) | Lista de plataformas de streaming de filmes obtidas no TMDB.
-StreamingFilme | [StreamingFilme.csv](./data/processed/StreamingFilme.csv) | Cada linha da tabela relaciona um filme com uma plataforma na qual ele pode ser encontrado.
+Filme | [Filme.csv](./data/processed/Filme.csv) | Tabela com dados dos filmes
+Sequencia | [Sequencia.csv](./data/processed/Sequencia.csv) | Relação de sequência entre filmes
+Franquia | [Franquia.csv](./data/processed/Franquia.csv) | Lista das franquias que contêm os filmes na tabela Filme
+FranquiaFilme | [FranquiaFilme.csv](./data/processed/FranquiaFilme.csv) | Relaciona franquias com seus respectivos filmes
+Genero | [Genero.csv](./data/processed/Genero.csv) | Lista de gêneros obtidos no TMDB
+GeneroFilme | [GeneroFilme.csv](./data/processed/GeneroFilme.csv) | Cada linha na tabela relaciona um filme com um gênero que ele possui
+Pessoa | [Pessoa.csv](./data/processed/Pessoa.csv) | Tabela com dados sobre pessoas que participaram da produção de filmes da tabela Filme
+PessoaFilme | [PessoaFilme.csv](./data/processed/PessoaFilme.csv) | Relaciona pessoas e filmes indicando o tipo de participação da pessoa: Ator, Diretor ou Roterista
+Avaliador | [Avaliador.csv](./data/processed/Avaliador.csv) | Lista com alguns portais de avaliação de filmes
+Avaliacao | [Avaliacao.csv](./data/processed/Avaliacao.csv) | Armazena as avaliações dos filmes da tabela Filme realizadas pelos avaliadores da tabela Avaliador
+Streaming | [Streaming.csv](./data/processed/Streaming.csv) | Lista de plataformas de streaming de filmes obtidas no TMDB
+StreamingFilme | [StreamingFilme.csv](./data/processed/StreamingFilme.csv) | Cada linha da tabela relaciona um filme com uma plataforma na qual ele pode ser assistido
 
 ## Bases de Dados
 
@@ -89,9 +89,6 @@ Internet Movie Database (IMDb) | [IMDb](https://www.imdb.com) |  Base de dados o
 Rotten Tomatoes movies and critic reviews dataset | [Kaggle](https://www.kaggle.com/stefanoleone992/rotten-tomatoes-movies-and-critic-reviews-dataset/activity) |  Dataset com avaliações de filmes obtidas do Rotten Tomatoes
 
 ## Detalhamento do Projeto
-
-> Apresente aqui detalhes do processo de construção do dataset e análise. Nesta seção ou na seção de Perguntas podem aparecer destaques de código como indicado a seguir. Note que foi usada uma técnica de highlight de código, que envolve colocar o nome da linguagem na abertura de um trecho com `~~~`, tal como `~~~python`.
-> Os destaques de código devem ser trechos pequenos de poucas linhas, que estejam diretamente ligados a alguma explicação. Não utilize trechos extensos de código. Se algum código funcionar online (tal como um Jupyter Notebook), aqui pode haver links. No caso do Jupyter, preferencialmente para o Binder abrindo diretamente o notebook em questão.
 
 #### Descrição do Processo de Coleta de Dados
 
@@ -235,17 +232,14 @@ def main(args):
 
 * Mudança de foco: uma de nossas motivações primárias ao escolhermos o tema de filmes foi a de analisar franquias e universos cinematográficos. Todavia, conforme avançamos com o projeto, percebemos que os pontos mais interessantes para análise estavam nas relações entre os filmes e as pessoas que trabalharam neles, assim como nas relações entre os filmes e os gêneros que os classificam.
 
-* Decisão de utilizar APIs: levando em consideração que a agregação de datasets sobre filmes disponíveis pela internet poderia requerer massivos tratamentos e transformações de dados, ponderamos que talvez fosse eficiente obter informações por requisições a APIs das fontes de dados escolhidas (TMDB e IMDb). Essa decisão nos ajudou a dar continuidade ao projeto, visto que cada nova versão do dataset era uma expansão da versão anterior.
+* Decisão de utilizar APIs: levando em consideração que a agregação de datasets sobre filmes disponíveis na internet poderia requerer massivos tratamentos e transformações de dados, ponderamos que talvez fosse mais eficiente obter informações por requisições a APIs das fontes de dados escolhidas (TMDB e IMDb). Essa decisão nos ajudou a dar continuidade ao projeto, visto que cada nova versão do dataset era uma expansão da versão anterior.
 
-* Expansão da quantidade de dados do dataset: para concluirmos a versão inicial do dataset, coletamos os dados relativos a 100 filmes e, para a versão final, projetávamos coletar os dados relacionados a cerca de 1000 filmes. No entanto, conforme o projeto avançou, decidimos aumentar ainda mais a quantidade de filmes que teriam 
+* Expansão da quantidade de dados do dataset: para concluirmos a versão inicial do dataset, coletamos os dados relativos a 100 filmes e, para a versão final, projetávamos coletar os dados relacionados a cerca de 1000 filmes. No entanto, conforme o projeto avançou, decidimos aumentar mais a quantidade de filmes, que passou para 2000. Por fim, ao decidirmos que um número maior de dados resultaria em melhores resultados para as perguntas/análises, segue que a versão final do dataset tem dados relativos a cerca de 5000 filmes.
 
-* Necessidade de otimizar os scripts de extração de dados: embora a decisão de usar APIs tenha trazido consequências boas, quando fomos aumentar a quantidade de dados no dataset, nos deparamos com um grande problema: a grande demora para a coleta dos dados. Para resolvê-lo, decidimos por paralelizar trechos -chave dos scripts que faziam a coleta. Como resultado disso, nos casos mais extremos (bases de dados Pessoa e Avaliador), houve uma diminuição de mais de 90% de tempo.
+* Necessidade de otimizar os scripts de extração de dados: embora a decisão de usar APIs tenha trazido consequências boas, quando fomos aumentar a quantidade de dados no dataset, nos deparamos com um problema: a grande demora para a coletar dados. Para resolvê-lo, decidimos por paralelizar trechos chave dos scripts que responsáveis por essa função. Como resultado da paralelização, nos casos mais extremos (bases de dados **Pessoa** e **Avaliador**), houve uma diminuição de mais de 90% de tempo necessário para realizar a coleta de dados.
 
-* Adição de dados do Rotten Tomatoes: com intuito de dar mais credibilidade às avaliações dos filmes presentes no dataset, decidimos considerar o RT como um avaliador presente no ds, além do TMDB e IMDb. Inicialmente, a ideia era de realizarmos web-scrapping em seu site, mas devido à complexidade de suas páginas dinâmicas, APIs descontinuadas e pouca tempo disponível para trabalharmos, optamos por utilizar um dataset disponível no Kaggle que contava com dados de avaliações do RT sobre filmes lançados até outubro de 2020. Para insere
+* Adição de dados do Rotten Tomatoes (RT): com intuito de dar mais credibilidade às avaliações dos filmes presentes no dataset, decidimos considerar o RT como um outro avaliador, além do TMDB e IMDb. Inicialmente, a ideia era a de realizarmos web-scrapping em seu site, mas, devido à complexidade de suas páginas dinâmicas e APIs descontinuadas, optamos por utilizar um dataset disponível no Kaggle que contava com dados de avaliações do RT sobre filmes lançados até outubro de 2020. Sendo que todas as notas obtidas foram tratadas para que estivessem na escala 0-10, assim como foi feito com as notas obtidas das outras fontes.
 
-> Relatório de evolução, descrevendo as evoluções na modelagem do projeto, dificuldades enfrentadas, mudanças de rumo, melhorias e lições aprendidas. Referências aos diagramas, modelos e recortes de mudanças são bem-vindos.
-> Podem ser apresentados destaques na evolução dos modelos conceitual e lógico. O modelo inicial e intermediários (quando relevantes) e explicação de refinamentos, mudanças ou evolução do projeto que fundamentaram as decisões.
-> Relatar o processo para se alcançar os resultados é tão importante quanto os resultados.
 
 ## Perguntas de Pesquisa/Análise Combinadas e Respectivas Análises
 
