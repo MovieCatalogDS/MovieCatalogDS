@@ -1,7 +1,7 @@
 import pandas as pd
 from tmdbv3api import TMDb
 from tmdbv3api import Movie
-
+import json
 
 ''' 
 
@@ -18,9 +18,21 @@ save_path = load_path
 tmdb = TMDb()
 movie_instance = Movie()
 
-with open(load_path + 'key.txt') as f:
-    tmdb.api_key = f.readline()
+# with open(load_path + 'key.txt') as f:
+#     tmdb.api_key = f.readline()
 
+def config_tmbd():
+    global tmdb
+    # Ler a key para a api a partir de um arquivo
+    # Subir um json com a sua key no colab
+    with open('key.json', 'r') as f:
+        key = f.read()
+
+        key = json.loads(key)
+        key = key['key']
+
+        # Pode subistituir key pela string da key diretamente também
+        tmdb.api_key = key
 
 def load_csv(file_name="", index_col="id_TMDB"):
     try:
@@ -169,6 +181,7 @@ def merge_person_movie_table(previous_person_movie, current):
 
 
 def pessoa_filme():
+    config_tmbd()
     movies_id_list, prev_person_movie_table = load_data()
     person_movie_table = []
 
@@ -182,9 +195,8 @@ def pessoa_filme():
 
     person_movie_table_raw = merge_person_movie_table(prev_person_movie_table, person_movie_table)
 
-    return table_optimizer(person_movie_table_raw)
+    #return table_optimizer(person_movie_table_raw)
+    person_movie = table_optimizer(person_movie_table_raw)
+    print(person_movie)
+    write_csv(person_movie, 'PessoaFilme')
 
-
-person_movie = pessoa_filme()
-print(person_movie)
-write_csv(person_movie, 'PessoaFilme')

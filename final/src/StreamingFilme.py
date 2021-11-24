@@ -17,8 +17,9 @@ load_path = "../data/processed/"      #path definitivo do github
 save_path = load_path
 
 # chave da api do tmdb
-with open(load_path + 'key.txt') as f:
-    api_key = f.readline()
+with open('key.json', 'r') as f:
+    api_key = f.read()
+    api_key = json.loads(api_key)['key']
 
 
 def load_csv(file_name="", index_col="id_TMDB"):
@@ -108,6 +109,6 @@ def run_streaming():
     providers = get_all_providers()
     write_csv(providers, 'Streaming', indice=False)
 
-
-run_streaming_filme()
-run_streaming()
+if __name__ == "__main__":
+    run_streaming_filme()
+    run_streaming()

@@ -4,7 +4,7 @@ from tmdbv3api import TMDb
 from tmdbv3api import Movie
 import multiprocessing
 import time
-
+import json
 ''' 
 
     Essa func depende do arquivo "Avaliador.csv" e "Filme.csv"
@@ -23,11 +23,21 @@ save_path = load_path
 imdb_obj = imdb.IMDb()
 tmdb = TMDb()
 
-with open(load_path + 'key.txt') as f:
-    tmdb.api_key = f.readline()
-
 total_progress = 0
 current_progress = multiprocessing.Value('i', 0)
+
+def config_tmbd():
+    global tmdb
+    # Ler a key para a api a partir de um arquivo
+    # Subir um json com a sua key no colab
+    with open('key.json', 'r') as f:
+        key = f.read()
+
+        key = json.loads(key)
+        key = key['key']
+
+        # Pode subistituir key pela string da key diretamente também
+        tmdb.api_key = key
 
 
 def load_csv(file_name="", index_col="id_TMDB"):
@@ -208,6 +218,7 @@ def grades_loader(movies, evaluator_id_list, rt_movie):
 
 
 def avaliacao():
+    config_tmbd()
     global total_progress
     df = load_csv("Avaliador", "id")
     evaluator_id_list = df.index.to_list()
@@ -221,9 +232,7 @@ def avaliacao():
 
     grades_df = pd.DataFrame(grades_table, columns=['id_avaliador', 'id_filme_TMDB', 'nota'])
 
-    return grades_df
-
-
-grades = avaliacao()
-print(grades)
-write_csv(grades, 'Avaliacao', indice=False)
+    #return grades_df
+    grades = grades_df
+    print(grades)
+    write_csv(grades, 'Avaliacao', indice=False)

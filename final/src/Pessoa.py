@@ -4,7 +4,7 @@ from tmdbv3api import Person
 import imdb
 import time
 import multiprocessing
-
+import json
 
 ''' 
     
@@ -26,12 +26,24 @@ tmdb = TMDb()
 imdb_obj = imdb.IMDb()
 person_obj = Person()
 
-with open(load_path + 'key.txt') as f:
-    tmdb.api_key = f.readline()
+# with open(load_path + 'key.txt') as f:
+#     tmdb.api_key = f.readline()
 
 total_progress = 0
 current_progress = multiprocessing.Value('i', 0)
 
+def config_tmbd():
+    global tmdb
+    # Ler a key para a api a partir de um arquivo
+    # Subir um json com a sua key no colab
+    with open('key.json', 'r') as f:
+        key = f.read()
+
+        key = json.loads(key)
+        key = key['key']
+
+        # Pode subistituir key pela string da key diretamente também
+        tmdb.api_key = key
 
 def load_csv(file_name="", index_col="id_TMDB"):
     try:
@@ -131,6 +143,7 @@ def call_load_person_single_thread(person_id_list, total_size):
 
 
 def person_loader(person_id_list):
+    config_tmbd()
     global threads_number
     size_person_id_list = len(person_id_list)
     size_per_thread = size_person_id_list // threads_number
@@ -164,6 +177,7 @@ def person_loader(person_id_list):
 
 
 def pessoa():
+    config_tmbd()
     global total_progress
     df = load_csv("PessoaFilme", "id_pessoa_TMDB")
     person_id_list_raw = df.index.to_list()
@@ -173,9 +187,7 @@ def pessoa():
 
     person_list = person_loader(person_id_list)
 
-    return pd.DataFrame(person_list, columns=['id_TMDB', 'id_IMDB', 'nome', 'nacionalidade', 'num_oscars'])
+    person = pd.DataFrame(person_list, columns=['id_TMDB', 'id_IMDB', 'nome', 'nacionalidade', 'num_oscars'])
+    print(person)
+    write_csv(person, 'Pessoa', indice=False)
 
-
-person = pessoa()
-print(person)
-write_csv(person, 'Pessoa', indice=False)

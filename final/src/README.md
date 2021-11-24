@@ -40,8 +40,16 @@ chmod +x build_MCDS.sh
 ~~~
 
 ~~~bash
+# Adicionar arquivos e repositórios necessários para tabelas
+cp ../data/external/RT_db.csv ../data/processed
+mkdir ../data/processed/temp
+
 # Iniciar a construção pelo main.py
 python main.py num_paginas ordenar_por
+
+# Remover os arquivos temporários
+rm ../data/processed/*_*.csv
+rm -rf ../data/processed/temp
 ~~~
 
 Para executar os scripts são necessários os seguintes parâmetros:
