@@ -57,7 +57,6 @@ STREAMINGFILME(_nome_streaming_, _id_filme_TMDB)
   id_filme_TMDB chave estrangeira -> FILME(id_TMDB)
 ~~~
 
-
 Modelo Lógico de Grafos - Grafo de Propriedades
 
 ![Modelo Lógico de Grafos](./images/modelo-logico-grafos.png)
@@ -80,6 +79,7 @@ Avaliacao | [Avaliacao.csv](./data/processed/Avaliacao.csv) | Armazena as avalia
 Streaming | [Streaming.csv](./data/processed/Streaming.csv) | Lista de plataformas de streaming de filmes obtidas no TMDB
 StreamingFilme | [StreamingFilme.csv](./data/processed/StreamingFilme.csv) | Cada linha da tabela relaciona um filme com uma plataforma na qual ele pode ser assistido
 
+
 ## Bases de Dados
 
 título da base | link | breve descrição
@@ -88,23 +88,22 @@ The Movie Database (TMDB) | [TMDB](https://www.themoviedb.org/?language=pt-BR) |
 Internet Movie Database (IMDb) | [IMDb](https://www.imdb.com) |  Base de dados online de informação sobre cinema, TV, música e games
 Rotten Tomatoes movies and critic reviews dataset | [Kaggle](https://www.kaggle.com/stefanoleone992/rotten-tomatoes-movies-and-critic-reviews-dataset/activity) |  Dataset com avaliações de filmes obtidas do Rotten Tomatoes
 
+
 ## Detalhamento do Projeto
 
 #### Descrição do Processo de Coleta de Dados
 
-O Movie Catalog Dataset (MCDS), é uma base de dados que agrega informações sobre diversas entidades no contexto da indústria cinematográfica. O coração do nosso dataset é a tabela Filme, cada linha dessa tabela armazena informações sobre um determinado filme. A maioria das outras tabelas, que compõem o MCDS, dependem dessa tabela para serem construídas. Com isso, um dos cuidados iniciais na elaboração do dataset foi, elencar uma fonte de dados de filmes, que fornecesse a maioria das informações que precisamos, como visto no modelo conceitual.
+O Movie Catalog Dataset (MCDS) é uma base de dados que agrega informações sobre diversas entidades no contexto da indústria cinematográfica. O coração do nosso dataset é a tabela **Filme**, sendo que cada linha dela armazena informações sobre um determinado filme. A maioria das outras tabelas que compõem o MCDS dependem de **Filme** para serem construídas. 
 
-Dentre as fontes que encontramos, o The Movie Database (TMDB) e o Internet Movie Database (IMDb), foram as fontes de dados mais interessantes. Ambas possuem APIs públicas, que facilitam a aquisição de dados.
+Com isso, um dos cuidados iniciais na elaboração do dataset foi o de elencar uma fonte de dados de filmes que fornecesse a maioria das informações que precisamos, como visto no modelo conceitual. Dentre as encontradas, o The Movie Database (TMDB) e o Internet Movie Database (IMDb) foram as fontes de dados mais interessantes. Ambas possuem APIs públicas, o que facilita a aquisição de dados.
 
-Optamos por utilizar o TMDB como fonte principal, pois o uso de sua api não apresenta restrições no número de requisições diárias, enquanto a API do IMDb impõem um limite de 100 requisições por dia. Nosso plano inicial era ter uma base de dados com pelo menos 1000 filmes, uma quantidade de dados que acreditamos ser razoável para posteriores análises. Desse modo, o limite de requisições do IMDb tornava inviável o uso de sua API como fonte principal, dado o prazo para a entrega do dataset.
+Optamos por utilizar o TMDB como fonte principal, pois o uso de sua API não apresenta restrições no número de requisições diárias, enquanto a API do IMDb impõe um limite de 100 requisições por dia. Nosso plano inicial era ter uma base de dados com pelo menos 1000 filmes, uma quantidade de dados que acreditamos ser razoável para posteriores análises. Desse modo, o limite de requisições do IMDb tornava inviável o uso de sua API como fonte principal, dado o prazo para a entrega do dataset.
 
-Escolhida a fonte de dados principal, escolhemos Python como a linguagem de programação, para elaborar os scripts que constroem o dataset. A escolha partiu da familiaridade de todos os membros da equipe com a linguagem, além do fato dela possuir bibliotecas e frameworks para tratamento de dados que facilitam a construção do MCDS e que encontramos uma biblioteca de terceiros que torna o uso da API do TMDB mais prático.
+Escolhida a fonte de dados principal, escolhemos Python como a linguagem de programação para elaborar os scripts que constroem o dataset. A escolha partiu da familiaridade de todos os membros da equipe com a linguagem, além do fato dela possuir bibliotecas e frameworks para tratamento de dados que facilitam a construção do MCDS, também encontramos uma biblioteca de terceiros que torna o uso da API do TMDB mais prático.
 
-Nem todas as informações que necessitamos estão disponíveis no TMDB, por exemplo o número de oscars que um filme ou pessoa ganhou não estão presentes nessa base. Com isso, decidimos utilizar o IMDb como fonte complementar de dados para obter os dados faltantes, pois o TMDB fornece o id dos filmes do IMDb como uma das informações. Dada a restrição da Api do IMDb, optamos por utilizar uma biblioteca de Python - IMDbPY - que obtém dados do IMDb através de Web Scraping. No entanto, a coleta de dados, nessa abordagem, é lenta se comparada ao uso de APIs.
+Nem todas as informações que necessitamos estão disponíveis no TMDB, por exemplo o número de Oscars que um filme ou uma pessoa ganhou não estão presentes nessa base. Com isso, decidimos utilizar o IMDb como fonte complementar para obter os dados faltantes, pois o TMDB fornece o *id* dos filmes do IMDb como uma das informações. Dada a restrição da API do IMDb, optamos por utilizar uma biblioteca de Python - IMDbPY - que obtém dados do IMDb através de web scraping. O uso da IMDbPY foi limitado à coleta de informações sobre a classificação indicativa dos filmes e o número de Oscars recebidos por um filme ou pessoa. No entanto, a coleta de dados nessa abordagem é lenta se comparada ao uso de APIs.
 
-O uso da biblioteca IMDbPY, foi limitado à coleta de informações sobre a classificação indicativa para os filmes e número de Oscars recebidos por um filme ou pessoa.
-
-Para obter as informações dos filmes no TMDB, precisamos primeiro consultar o recurso Discover da API, no qual conseguiamos obter listas de filmes ordenados por alguma caracterista como, popularidade, data de lançamento e receita. Nessa etapa optamos por obter filmes ordenados de maneira decrescente pelas suas receitas. As listas de filmes no Discover são distibuidas em páginas, com cerca de 20 filmes cada, assim para obter informações preliminares sobre N filmes são necessárias aproximadamente N/20 páginas do Discover, ou seja N/20 requisições a API. Em seguida utilizamos o recurso Movie da API para obter todas as informações disponíveis no TMDB sobre os filmes em cada página.
+Para obter as informações dos filmes no TMDB, precisamos primeiro consultar o recurso Discover da API, no qual era possível obter listas de filmes ordenados por alguma caracterista como, popularidade, data de lançamento e receita. Nessa etapa, optamos por obter filmes ordenados de maneira decrescente pelas suas receitas. As listas de filmes no Discover são distibuidas em páginas, com cerca de 20 filmes cada, assim, para obter informações preliminares sobre N filmes, são necessárias aproximadamente N/20 páginas do Discover, ou seja, N/20 requisições a API. Em seguida, utilizamos o recurso Movie da API para obter todas as informações disponíveis no TMDB sobre os filmes em cada página.
 
 Trecho de código utilizado para obter as informações sobre filmes:
 
@@ -128,7 +127,7 @@ def get_movies_in_page(page, sort_by:str):
   return list(map(get_movie_details, movie_list))
 ~~~
 
-O recurso Movie da biblioteca para a API do TMDB, retorna os dados em uma estrutura semelhante a um dicionário Python, em que as chaves dos dicionários são os nomes dos dados disponíveis na API para filmes, caso o TMDB não tenha algum dos dados o valor relacionado a chave desse dado é definido como `None`. Para obter os dados que precisamos, criamos duas listas de mesmo tamanho, uma contendo o nome dos dados que necessitamos e outra com o nome desses dados na nossa tabela. Assim, depois de obter os dados dos filmes, construimos a tabela fazendo match por posição nas listas de chaves e então extraindo o respectivo dado pela chave na estrutura retornada pelo TMDB.
+O recurso Movie da biblioteca para a API do TMDB retorna os dados em uma estrutura semelhante a um dicionário Python, em que as chaves dos dicionários são os nomes dos dados disponíveis na API para filmes, caso o TMDB não tenha algum dos dados o valor relacionado a chave desse dado é definido como `None`. Para obter os dados que precisávamos, criamos duas listas de mesmo tamanho, uma contendo o nome dos dados que necessitávamos e outra com o nome desses dados na nossa tabela. Assim, depois de obter os dados dos filmes, construímos a tabela fazendo match por posição nas listas de chaves e então extraindo o respectivo dado pela chave na estrutura retornada pelo TMDB.
 
 Trecho do código com a definição dos dados de filmes que coletamos do TMDB:
 
@@ -144,13 +143,11 @@ atributos_tmdb = ["id", "imdb_id", "title", "original_title", "overview", "runti
                   "budget", "revenue"]
 ~~~
 
-Após a construção da primeira versão do MCDS notamos algumas inconsistências nas tabelas FranquiaFilme e Sequencia. Nessa tabelas alguns registros apresentavam informações incorretas, por exemplo na tabela FranquiaFilme, constava que os filmes do Capitão América da Marvel, pertencia a franquia de filmes Frozen da Disney.
+Após a construção da primeira versão do MCDS notamos algumas inconsistências nas tabelas **FranquiaFilme** e **Sequencia**. Nessa tabelas. alguns registros apresentavam informações incorretas, por exemplo, na tabela **FranquiaFilme**, constava que os filmes do Capitão América, da Marvel, pertencia a franquia de filmes Frozen da Disney.
 
-Uma das formas que utilizamos para determina a franquia de um filme se baseava em uma lista de franquias obtida por web scraping de uma página da Wikipedia. O filme era dito pertencente a franquia se alguma de suas keywords - dado disponível no TMDB - correpondia ao nome de alguma franquia na lista do Wikipedia.
+Uma das formas que utilizamos para determinar a franquia em que um filme estava inserido se baseava em uma lista de franquias obtida por web scraping de uma página da Wikipedia. O filme era dito pertencente a franquia se alguma de suas keywords - dado disponível no TMDB - correpondia ao nome de alguma franquia na lista do Wikipedia. 
 
-Descobrimos que associações indevidadas de franquias aconteciam, porque alguns filmes possuem keywords com o mesmo nome de algumas franquias na lista, mesmo não pertencendo a essas franquias.
-
-Assim, construimos um novo algoritmo para construção de franquias que, primeiro selecionava uma franquia na lista e então busca uma correspondência com o banco de keywords do TMDB. Então utilizando o recurso de keywords da API, obtemos os filmes que estavam ligados aquela franquia.
+Descobrimos que associações indevidadas de franquias aconteciam porque alguns filmes possuem keywords com o mesmo nome de algumas franquias na lista, mesmo não pertencendo a elas. Assim, construímos um novo algoritmo para construção de franquias que selecionava uma franquia na lista e então buscava uma correspondência com o banco de keywords do TMDB. Logo, utilizando o recurso de keywords da API, obtivemos os filmes que estavam ligados a aquela franquia.
 
 Ainda para evitar inconsistências, reduzimos o número de franquias na lista para as que sabíamos que resultaram em correspondências corretas já que seus nomes não eram comuns a assuntos abordados em filmes de modo geral.
 
@@ -176,13 +173,13 @@ def tmdb_search_keyword(api_key:str, query:str, page=1):
 keyword_id = tmdb_search(api_key, 'MonsterVerse')
 ~~~
 
-Elaboramos também um novo algoritmo que encontra as sequências, removendo a necessidade de fazer consultas a API do TMDB, pois o nosso próprio dataset possuia as informações necessárias para a construção dessa tabela (Franquias e Filmes), otimizando o tempo necessário para a construção do MCDS.
+Elaboramos também um novo algoritmo que encontra as sequências, removendo a necessidade de fazer consultas a API do TMDB, pois o nosso próprio dataset possuia as informações necessárias para a construção dessa tabela (**FranquiaFilme**), otimizando o tempo necessário para a construção do MCDS.
 
-Durante a coleta de dados, notamos que o tempo para a construção de algumas tabelas era consideravelmente alto. Assim, dada a nossa expectativa inicial de 1000 filmes, a demora na construção das tabelas seria um grande entrave para o avanço do trabalho. Dessa forma, decidimos paralelizar os scripts de construção das tabelas que consideramos mais problemáticas (Tabelas que necessitam de informações do IMDbPY).
+Durante a coleta de dados, notamos que o tempo para a construção de algumas tabelas era consideravelmente alto. Assim, dada a nossa expectativa inicial de 1000 filmes, a demora na construção das tabelas seria um grande entrave para o avanço do trabalho. Dessa forma, decidimos paralelizar os scripts de construção das tabelas que consideramos mais problemáticas (tabelas que necessitavam de informações do IMDbPY).
 
-Para tanto, utilizamos a biblioteca padrão do Python, Multiprocessing, que oferece a possibilidade de iniciar processos independentes partindo de um processo pai.  Com isso, a nossa paralelização consistiu em dividir o trabalho de aquisição de dados para a construção de uma tabela entre um número de processos equivalente ao número de núcleos lógicos que os nossos computadores possuíam. Por exemplo, em uma máquina com 12 núcleos, são gerados 12 processos que obtêm dados de 12 filmes distintos ao mesmo tempo. 
+Para tanto, utilizamos a biblioteca padrão do Python, Multiprocessing, que oferece a possibilidade de iniciar processos independentes partindo de um processo pai. Com isso, a nossa paralelização consistiu em dividir o trabalho de aquisição de dados para a construção de uma tabela entre um número de processos equivalente ao número de núcleos lógicos que os nossos computadores possuem. Por exemplo, para uma máquina com 12 núcleos, são gerados 12 processos que obtêm dados de 12 filmes distintos ao mesmo tempo. 
 
-Para se ter uma ideia a construção da Tabela Filme com 2000 registros,necessitou de aproximadamente 2h30min, para ser totalmente construída na versão dos scripts sem paralelização. Enquanto, que na versão paralelizada esse tempo caiu para aproximadamente 30min, ou seja, conseguimos construir a mesma tabela em um tempo 5 vezes menor.
+Para se possa ter uma noção da situação, a construção da tabela **Filme** com 2000 registros necessitou de, aproximadamente, 2h30min para ser totalmente construída na versão dos scripts sem paralelização. Enquanto que, na versão paralelizada, esse tempo caiu para aproximadamente 30min, ou seja, conseguimos construir a mesma tabela em um tempo 5 vezes menor.
 
 Trecho de ilustrando a paralelização realizada:
 
@@ -217,14 +214,16 @@ def main(args):
   concatenar((table_name, num_pss))
 ~~~
 
+
 #### Lista/Resumo das operações realizadas
 
-* Agregação de dados obtidos a partir da API do TMDB
-* Extração de dados páginas do IMDb via IMDbPY
-* Transformação de dados vindos do IMDb (Calculo do Número de Oscars)
-* Exclusão de registros com dados essenciais faltantes 
-* Integração de dados entre as diferentes fontes (TMDB, IMDb, Rotten Tomatoes)
-* Paralelização das operações de extração de dados do IMDb 
+* Agregação de dados obtidos a partir da API do TMDB;
+* Extração de dados páginas do IMDb via IMDbPY;
+* Transformação de dados vindos do IMDb (cálculo do cúmero de Oscars);
+* Exclusão de registros com dados essenciais faltantes;
+* Integração de dados entre as diferentes fontes (TMDB, IMDb e Rotten Tomatoes);
+* Paralelização das operações de extração de dados do IMDb.
+
 
 #### Tamanho Final do Dataset
 
@@ -242,6 +241,7 @@ Avaliador | 3 | 65 B
 Avaliacao | 13561 | 231 KB
 Streaming | 418 | 4.78 KB
 StreamingFilme | 35780 | 612 KB
+
 
 ## Evolução do Projeto
 
@@ -421,6 +421,7 @@ StreamingFilme | 35780 | 612 KB
 * Quais são as características de um filme que faz sucesso com o público?
 
   * A partir de nosso dataset, utilizando queries SQL, é possível elencar os filmes com as maiores receitas, isto é, que fizeram mais sucesso com público nos cinemas. Definindo um recorte temporal que tem início em 2018, por exemplo, pode-se verificar quais foram os filmes que mais lucraram nos últimos anos, sendo possível verificar quais são seus gêneros, seu orçamento, as pessoas envolvidas em sua produção, dentre outros aspectos. Em posse dessas informações, um estúdio da indústria cinematográfica pode ser capaz de desenhar o "mapa do tesouro" do sucesso com o público e identificar quais são os requisitos para aumentar seu lucro e reconhecimento, por exemplo.
+
 
 #### Pergunta/Análise 3
 
