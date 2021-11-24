@@ -32,6 +32,9 @@ pip install -r requirements.txt
 Após instalar as dependências do projeto no ambiente virtual, ou em seu sistema, basta executar o script bash `build_MCDS.sh`, ou o arquivo `main.py`, para iniciar a construção do dataset como nos exemplos abaixo.
 
 ~~~bash
+# Tonar o script um executável (linux)
+chmod +x build_MCDS.sh
+
 # Iniciar a construção pelo script bash
 ./build_MCDS.sh num_paginas ordenar_por
 ~~~

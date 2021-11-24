@@ -10,7 +10,7 @@ from franquiaKeywords import cpmt_franchise_table
 def config_tmdb():
     """# **Configuração da API do TMDB**"""
 
-    # instanciar a configuração da api
+    # instânciar a configuração da api
     api = tmdb.TMDb()
 
     # Ler a key para a api a partir de um arquivo
@@ -68,27 +68,33 @@ def build_franchise_table():
     config_tmdb()
     films = pd.read_csv('../data/processed/Filme.csv')
     films_ids = list(films['id_TMDB'])
-
+    
+    # Número de Núcleos Lógicos do processador
     num_pp = cpu_count()
 
+    # Quantidade de trabalho para cada Processo
     ipp = len(films_ids)//num_pp
     pr_array = list()
 
+    # Dividir os indices dos filmes entre os Processos 
     start = 0
     for i in range(num_pp-1):
         stop = ipp*(i+1)
         ids_clip = list(films_ids[start: stop])
         start = stop
+        # Criar e iniciar o processo
         pr = Process(target=franchise_job, args=(ids_clip, i))
         pr_array.append(pr)
         pr.start()
-        print(f"ID do processo p{i}: {pr.pid}")         
+        print(f"ID do processo p{i}: {pr.pid}")
 
+    # Iniciar o último processo (Pode possuir alguns ids a mais)
     ids_clip = list(films_ids[stop: ])
     pr =Process(target=franchise_job, args=(ids_clip, num_pp-1))
     pr_array.append(pr)
     pr.start()  
 
+    # Esperar que todos os Processos terminem
     for i in range(len(pr_array)):
         pr_array[i].join()  
 
@@ -101,7 +107,7 @@ def build_franchise_table():
     # Completar a tabela de franquias
     cpmt_franchise_table()
 
-
+    # Gerar a tabela Franquia
     ff = pd.read_csv('../data/processed/FranquiaFilme.csv')
     franchises = ff.groupby('nome_franquia').count()
     frc_names = list(franchises.index)
