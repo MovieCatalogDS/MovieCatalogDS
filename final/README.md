@@ -131,9 +131,9 @@ StreamingFilme | [StreamingFilme](./data/processed/StreamingFilme.csv) | Cada li
 
 título da base | link | breve descrição
 ----- | ----- | -----
-TMDB | [TMDB](https://www.themoviedb.org/?language=pt-BR) |  Base de dados gratuita e de código aberto sobre filmes e séries de TV
-IMDb | [IMDb](https://www.imdb.com) |  Base de dados online de informação sobre cinema, TV, música e games
-RT_db | [Kaggle](https://www.kaggle.com/stefanoleone992/rotten-tomatoes-movies-and-critic-reviews-dataset) |  Kaggle Dataset com avaliações de filmes obtidas do Rotten Tomatoes
+The Movie Database (TMDB) | [TMDB](https://www.themoviedb.org/?language=pt-BR) |  Base de dados gratuita e de código aberto sobre filmes e séries de TV
+Internet Movie Database (IMDb) | [IMDb](https://www.imdb.com) |  Base de dados online de informação sobre cinema, TV, música e games
+Rotten Tomatoes movies and critic reviews dataset | [Kaggle](https://www.kaggle.com/stefanoleone992/rotten-tomatoes-movies-and-critic-reviews-dataset/activity) |  Dataset com avaliações de filmes obtidas do Rotten Tomatoes
 
 ## Detalhamento do Projeto
 
@@ -156,7 +156,7 @@ O uso da biblioteca IMDbPY, foi limitado à coleta de informações sobre a clas
 
 Para obter as informações dos filmes no TMDB, precisamos primeiro consultar o recurso Discover da API, no qual conseguiamos obter listas de filmes ordenados por alguma caracterista como, popularidade, data de lançamento e receita. Nessa etapa optamos por obter filmes ordenados de maneira decrescente pelas suas receitas. As listas de filmes no Discover são distibuidas em páginas, com cerca de 20 filmes cada, assim para obter informações preliminares sobre N filmes são necessárias aproximadamente N/20 páginas do Discover, ou seja N/20 requisições a API. Em seguida utilizamos o recurso Movie da API para obter todas as informações disponíveis no TMDB sobre os filmes em cada página.
 
-Segue Abaixo o código utilizado para obter as informações sobre filmes.
+Trecho de código utilizado para obter as informações sobre filmes:
 
 ~~~python
 # Retorna um dicionário com todos os detalhes que a api do TMDB fornece
@@ -196,11 +196,11 @@ atributos_tmdb = ["id", "imdb_id", "title", "original_title", "overview", "runti
 
 Após a construção da primeira versão do MCDS notamos algumas inconsistências nas tabelas FranquiaFilme e Sequencia. Nessa tabelas alguns registros apresentavam informações incorretas, por exemplo na tabela FranquiaFilme, constava que os filmes do Capitão América da Marvel, pertencia a franquia de filmes Frozen da Disney.
 
-Uma das formas que utilizamos para determinar a franquia de um filme se baseava em uma lista de franquias obtida por web scraping de uma página da Wikipedia. O filme era dito pertencente a franquia se alguma de suas keywords - dado disponível no TMDB - correpondia ao nome de alguma franquia na lista do Wikipedia.
+Uma das formas que utilizamos para determina a franquia de um filme se baseava em uma lista de franquias obtida por web scraping de uma página da Wikipedia. O filme era dito pertencente a franquia se alguma de suas keywords - dado disponível no TMDB - correpondia ao nome de alguma franquia na lista do Wikipedia.
 
-Descobrimos que associações indevidadas de franquias aconteciam porque alguns filmes possuem keywords com o mesmo nome de algumas franquias na lista, mesmo não pertencendo a essas franquias.
+Descobrimos que associações indevidadas de franquias aconteciam, porque alguns filmes possuem keywords com o mesmo nome de algumas franquias na lista, mesmo não pertencendo a essas franquias.
 
-Assim, construimos um novo algoritmo para construção de franquias que, primeiro selecionava uma franquia na lista e então buscava uma correspondência com o banco de keywords do TMDB. Então utilizando o recurso de keywords da API, obtivemos os filmes que estavam ligados com aquela franquia.
+Assim, construimos um novo algoritmo para construção de franquias que, primeiro selecionava uma franquia na lista e então busca uma correspondência com o banco de keywords do TMDB. Então utilizando o recurso de keywords da API, obtemos os filmes que estavam ligados aquela franquia.
 
 Ainda para evitar inconsistências, reduzimos o número de franquias na lista para as que sabíamos que resultaram em correspondências corretas já que seus nomes não eram comuns a assuntos abordados em filmes de modo geral.
 
@@ -228,27 +228,11 @@ keyword_id = tmdb_search(api_key, 'MonsterVerse')
 
 Elaboramos também um novo algoritmo que encontra as sequências, removendo a necessidade de fazer consultas a API do TMDB, pois o nosso próprio dataset possuia as informações necessárias para a construção dessa tabela (Franquias e Filmes), otimizando o tempo necessário para a construção do MCDS.
 
-Consequentemente, o grupo optou por construir os algoritmos subsequentes seguindo o padrão de reutilização das tabelas ja geradas, e assim, os algoritmos responsaveis pelas tabelas Avaliação, Pessoas, PessoaFilme e StreamingFilme compartilharam do seguinte trecho de código:
-
-~~~python
-def load_csv(file_name="", index_col="id_TMDB"):
-    ''' Código responsável por carregar tabelas ja geradas para reutilização.
-        Lê uma tabela gerada previamente e retorna um dataframe para manipulação '''
-    try:
-        file_name += '.csv'
-        return pd.read_csv(load_path + file_name, index_col=index_col)
-
-    except FileNotFoundError:
-        print("Arquivo [" + file_name + "] nao encontrado!")
-~~~
-
 Durante a coleta de dados, notamos que o tempo para a construção de algumas tabelas era consideravelmente alto. Assim, dada a nossa expectativa inicial de 1000 filmes, a demora na construção das tabelas seria um grande entrave para o avanço do trabalho. Dessa forma, decidimos paralelizar os scripts de construção das tabelas que consideramos mais problemáticas (Tabelas que necessitam de informações do IMDbPY).
 
 Para tanto, utilizamos a biblioteca padrão do Python, Multiprocessing, que oferece a possibilidade de iniciar processos independentes partindo de um processo pai.  Com isso, a nossa paralelização consistiu em dividir o trabalho de aquisição de dados para a construção de uma tabela entre um número de processos equivalente ao número de núcleos lógicos que os nossos computadores possuíam. Por exemplo, em uma máquina com 12 núcleos, são gerados 12 processos que obtêm dados de 12 filmes distintos ao mesmo tempo. 
 
-Para se ter uma ideia, a construção da Tabela Filme com 2000 registros, necessitou de aproximadamente 2h30min para ser totalmente construída na versão dos scripts sem paralelização. Enquanto, que na versão paralelizada esse tempo caiu para aproximadamente 30min, ou seja, conseguimos construir a mesma tabela em um tempo 5 vezes menor.
-
-Tal melhora no desempenho tambem ocorreu na mesma proporção para outros algoritmos que implementaram a paralelização, como na criação das tabelas Avaliação e Pessoas.
+Para se ter uma ideia a construção da Tabela Filme com 2000 registros,necessitou de aproximadamente 2h30min, para ser totalmente construída na versão dos scripts sem paralelização. Enquanto, que na versão paralelizada esse tempo caiu para aproximadamente 30min, ou seja, conseguimos construir a mesma tabela em um tempo 5 vezes menor.
 
 Trecho de ilustrando a paralelização realizada:
 
@@ -266,7 +250,7 @@ def main(args):
   ppp = num_pages//num_pss + 1
   pr_array = list()
 
-  # Instancia um processo para cada núcleo no computador
+  # Cria um processo para cada núcleo no computador
   # Cada processo constroi um pedaço da tabela
   for i in range(num_pss):
       t_name = f'data/{table_name}_{i}.csv'
@@ -297,10 +281,6 @@ def main(args):
 > Relatório de evolução, descrevendo as evoluções na modelagem do projeto, dificuldades enfrentadas, mudanças de rumo, melhorias e lições aprendidas. Referências aos diagramas, modelos e recortes de mudanças são bem-vindos.
 > Podem ser apresentados destaques na evolução dos modelos conceitual e lógico. O modelo inicial e intermediários (quando relevantes) e explicação de refinamentos, mudanças ou evolução do projeto que fundamentaram as decisões.
 > Relatar o processo para se alcançar os resultados é tão importante quanto os resultados.
-
-Ao longo do desenvolvimento do projeto foi decidido incluir várias fontes de dados com intuito de dar mais credibilidade a consulta de notas dos filmes, porém devido à complexidade, inicialmente o grupo optou por importar notas apenas das APIs do TMDB e IMDb com o propósito de disponibilizar um protótipo funcional para que assim se pudesse iniciar o desenvolvimento das querys SQL o quanto antes. Paralelamente foi analisada a possiblidade da inclusão de novas fontes e chegamos a conclusão, devido a grande influência, de que seria mais agregador ao projeto incluirmos notas do Rotten Tomatoes. 
-
-Incialmente optamos pela realização de web-scrapping em suas paginas, porém devido a complexidade de suas pagina dinâmicas, APIs descontinuadas e disponibilidade da equipe, optamos por utilizar um dataset suficientemente completo e recente do Kaggle para extrairmos os demais dados que precisávamos. Observou-se uma necessidade de padronização nas notas obtidas e, assim, o grupo optou normalizar todas as notas em uma escala de 0 a 10.
 
 ## Perguntas de Pesquisa/Análise Combinadas e Respectivas Análises
 
@@ -352,7 +332,7 @@ Incialmente optamos pela realização de web-scrapping em suas paginas, porém d
 
 #### Pergunta/Análise 2
 
-* Como os gêneros dos filmes se relacionam em uma determinada década?
+* Como os gêneros que classificam os filmes se relacionam em uma determinada década?
   
   * Para responder à esta pergunta, foi necessário analisarmos os gêneros que os classificam os filmes contidos no *dataset*, restringindo os filmes em questão pela década em que foram lançados. Ademais, utilizamos o Neo4j e também o Cytoscape a fim de gerarmos as respostas desejadas.
   
@@ -369,7 +349,8 @@ Incialmente optamos pela realização de web-scrapping em suas paginas, porém d
 
     // Tabela que representa o grafo da relação entre gêneros na década de 2000
 
-    MATCH (g1:Genero)<-[e:Cogen_2000]->(g2:Genero) RETURN g1.nome AS source, g2.nome AS target, e.num_filmes as weight
+    MATCH (g1:Genero)<-[e:Cogen_2000]->(g2:Genero)
+    RETURN g1.nome AS source, g2.nome AS target, e.num_filmes as weight
     ~~~
   
     * No Cytoscape, com base nos arquivos CSV gerados pelo Neo4j, construímos os grafos e aplicamos sobre eles análises de centralidade por grau e centralidade por *betweenness*. Sendo que, pelas configurações de visualização, definimos que a centralidade por grau é proporcional ao tamanho dos nós, a centralidade por *betweenness* é mostrada pela cor dos nós e a grossura de uma aresta é proporcional ao seu peso.
@@ -394,24 +375,46 @@ Incialmente optamos pela realização de web-scrapping em suas paginas, porém d
     ~~~cypher
     // Cálculo dos scores do PageRank no grafo
 
-    CALL gds.pageRank.stream({
-    nodeQuery:'MATCH (p:Pessoa) RETURN id(p) as id',
-    relationshipQuery:'MATCH (p1:Pessoa)-[r:Coparticipa]->(p2:Pessoa)
-    WHERE r.num_filmes/2 >= 5
-    RETURN id(p1) as source, id(p2) as target,r.num_filmes/2 as weight',
-    relationshipWeightProperty: 'weight'
-    })
-    YIELD nodeId,score
-    return gds.util.asNode(nodeId).nome AS nome, score AS pagerank
-    ORDER BY pagerank DESC
-    LIMIT 10000
+    CALL gds.graph.create(
+      'prGraph',
+      'Pessoa',
+      'Coparticipa'
+    )
+
+    CALL gds.pageRank.stream('prGraph')
+    YIELD nodeId, score
+    MATCH (p:Pessoa {id: gds.util.asNode(nodeId).id})
+    SET p.pagerank = score
 
     // Geração das comunidades de pessoas no grafo
+
+    CALL gds.graph.create(
+      'communityGraph',
+      'Pessoa',
+      {
+        Coparticipa: {
+          orientation: 'UNDIRECTED'
+        }
+      }
+    )
 
     CALL gds.louvain.stream('communityGraph')
     YIELD nodeId, communityId
     MATCH (p:Pessoa {id: gds.util.asNode(nodeId).id})
     SET p.comunidade = communityId
+
+    // Exportando os dados para utilizar no Cytoscape (CSV)
+    // Utilizamos um recorte de arestas com peso maior igual a 3
+
+    MATCH (p1:Pessoa)-[e:Coparticipa]->(p2:Pessoa)
+    WHERE e.num_filmes >= 3
+    RETURN p1.nome AS source, p2.nome AS target, e.num_filmes as weight
+    ORDER BY source
+
+    MATCH (p1:Pessoa)-[e:Coparticipa]->(p2:Pessoa)
+    WHERE e.num_filmes >= 3 
+    RETURN DISTINCT p1.nome AS nome, p1.pagerank AS pagerank, p1.comunidade as comunidade
+    ORDER BY nome
     ~~~
 
     * No Cytoscape, com base no arquivo CSV gerados pelo Neo4j, construímos o grafo e, pelas configurações de visualização, definimos que o *score* do PageRank de cada nó é proporcional ao seu tamanho e a grossura de uma aresta é proporcional ao seu peso.
@@ -432,7 +435,7 @@ Incialmente optamos pela realização de web-scrapping em suas paginas, porém d
 
 #### Pergunta/Análise 1
 
-* Sabendo que uma pessoa X trabalhou com uma pessoa Y no filme A e com uma pessoa Z no fime B, qual é a probabilidade das pessoas Y e Z trabalharem juntas em um filme C?
+* Sabendo que uma pessoa X trabalhou com uma pessoa Y no filme A e com uma pessoa Z no filme B, qual é a probabilidade das pessoas Y e Z trabalharem juntas em um filme C?
   
   * Com base em nosso *dataset*, pode ser gerado um grafo homogêneo que relaciona pessoas (atores, diretores e roteiristas) através filmes em que elas trabalharam juntas. Realizando um análise de predição de link sobre esse grafo, é possível calcular a probabilidade de duas pessoas colaborarem em um novo filme. Sendo que tais pessoas trabalharam com uma pessoa em comum, mas nunca colaboraram juntas. A resposta dessa pergunta pode ser relevante para facilitar o processo de *casting* - seleção de atores, roteiristas, etc. - de um filme em pré-produção, por exemplo.
 
@@ -449,7 +452,7 @@ Incialmente optamos pela realização de web-scrapping em suas paginas, porém d
   
   * Com base em nosso *dataset*, pode ser gerado um grafo homogêneo que relaciona pessoas (atores, diretores e roteiristas) através do gênero que classifica os filmes em que elas trabalharam juntas. Para delimitar a década de interesse, basta que o ano de lançamento de cada um dos filmes seja verificado na montagem do grafo. Fazendo recortes desse grafo que admitem somente pessoas que estão conectadas por um mesmo gênero, podemos aplicar uma análise de centralidade por PageRank para determinar as pessoas mais relevantes do gênero em questão. A resposta dessa pergunta pode ser relevante para o estudo da história da indústria cinematográfica, por exemplo.
 
-> Coloque um link para o arquivo do notebook que executa o conjunto de queries. Ele estará dentro da pasta `notebook`. Se por alguma razão o código não for executável no Jupyter, coloque na pasta `src`. Se as queries forem executadas atraves de uma interface de um SGBD não executável no Jupyter, como o Cypher, apresente na forma de markdown.
 
-* Conjunto de queries SQL: [](./notebooks/.ipynb)
-* Conjunto de queries Cypher: [](./src/.md)
+* Conjunto de queries SQL: [QueriesSQL.ipynb](./notebooks/QueriesSQL.ipynb)
+
+* Conjunto de queries Cypher: [QueriesCypher.md](./src/QueriesCypher.md)
