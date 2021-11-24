@@ -194,7 +194,7 @@ def main(args):
   num_pages, order_by, table_name = args
   num_pages = int(num_pages)
 
-  num_pss = cpu_count() # Numero de Treads do CPU
+  num_pss = cpu_count() # Número de Treads do CPU
 
   # páginas por processador = ceil(num_pages/num_pss)
   ppp = num_pages//num_pss + 1
@@ -225,6 +225,23 @@ def main(args):
 * Exclusão de registros com dados essenciais faltantes 
 * Integração de dados entre as diferentes fontes (TMDB, IMDb, Rotten Tomatoes)
 * Paralelização das operações de extração de dados do IMDb 
+
+#### Tamanho Final do Dataset
+
+Base | Número de Registros | Tamanho
+----- | ----- | -----
+Filme | 5040 | 2.39 MB
+Sequencia | 740 | 9.05 KB
+Franquia | 809 | 11.4 KB
+FranquiaFilme | 1600 | 31.8 KB
+Genero | 19 | 204 B
+GeneroFilme | 13522 | 204 KB
+Pessoa | 92154 | 3.64 MB
+PessoaFilme | 176468 | 4.97 MB
+Avaliador | 3 | 65 B
+Avaliacao | 13561 | 231 KB
+Streaming | 418 | 4.78 KB
+StreamingFilme | 35780 | 612 KB
 
 ## Evolução do Projeto
 
