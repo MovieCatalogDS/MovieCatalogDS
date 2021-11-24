@@ -91,8 +91,6 @@ Rotten Tomatoes movies and critic reviews dataset | [Kaggle](https://www.kaggle.
 
 ## Detalhamento do Projeto
 
-#### Descrição do Processo de Coleta de Dados
-
 O Movie Catalog Dataset (MCDS) é uma base de dados que agrega informações sobre diversas entidades no contexto da indústria cinematográfica. O coração do nosso dataset é a tabela **Filme**, sendo que cada linha dela armazena informações sobre um determinado filme. A maioria das outras tabelas que compõem o MCDS dependem de **Filme** para serem construídas. 
 
 Com isso, um dos cuidados iniciais na elaboração do dataset foi o de elencar uma fonte de dados de filmes que fornecesse a maioria das informações que precisamos, como visto no modelo conceitual. Dentre as encontradas, o The Movie Database (TMDB) e o Internet Movie Database (IMDb) foram as fontes de dados mais interessantes. Ambas possuem APIs públicas, o que facilita a aquisição de dados.
@@ -227,7 +225,7 @@ def main(args):
 
 #### Tamanho Final do Dataset
 
-Base | Número de Registros | Tamanho
+base | número de registros | tamanho
 ----- | ----- | -----
 Filme | 5040 | 2.39 MB
 Sequencia | 740 | 9.05 KB
