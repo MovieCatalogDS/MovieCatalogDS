@@ -13,9 +13,6 @@ Os scripts que constroem o Movie Catalog Dataset foram elaborados em Python, por
 Recomendamos o uso de um ambiente virtual (venv) para a instalação das dependências de modo a evitar conflitos com os pacotes Python instalados no seu computador. Para instalar e iniciar um venv, use os seguintes comandos no terminal:
 
 ~~~bash
-# Instalar o modulo venv
-pip install venv
-
 # Criar o ambiente virtual
 python3 -m venv nome_do_venv
 
