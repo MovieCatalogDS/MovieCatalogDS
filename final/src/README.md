@@ -1,6 +1,6 @@
 # Instruções para construir o Movie Catalog Dataset (MCDS)
 
-Os scripts que constroem o Movie Catalog Dataset foram elaborados em Python portanto certifique-se de ter o [Interpretador de Python](https://www.python.org/downloads/) instalado.
+Os scripts que constroem o Movie Catalog Dataset foram elaborados em Python. Portanto, certifique-se de ter o [Interpretador de Python](https://www.python.org/downloads/) instalado.
 
 É necessária também uma [key para a API do TMDB](https://www.themoviedb.org/documentation/api), que deve ser adicionada no arquivo key.json, no campo indicado no exemplo abaixo.
 
@@ -34,6 +34,9 @@ pip install -r requirements.txt
 Após instalar as dependencias do projeto, no ambiente virtual, ou no seu sistema, basta executar o script bash `build_MCDS.sh` ou o arquivo `main.py`, para iniciar a construção do dataset como nos exemplos abaixo.
 
 ~~~bash
+# Tonar o script um executável (linux)
+chmod +x build_MCDS.sh
+
 # Iniciar a construção pelo script bash
 ./build_MCDS.sh num_paginas ordenar_por
 ~~~
